@@ -1,6 +1,8 @@
 package ca.knowtime.comm.parsers;
 
 
+import ca.knowtime.comm.KnowTimeAccess;
+import ca.knowtime.comm.cache.CacheableResponse;
 import ca.knowtime.comm.types.Location;
 import ca.knowtime.comm.types.Stop;
 import org.json.JSONArray;
@@ -13,10 +15,22 @@ import java.util.List;
 public class StopsParser
         implements JsonParser<List<Stop>>
 {
+    private final KnowTimeAccess mKnowTime;
     private final String mJson;
 
 
-    public StopsParser( final String json ) {
+    public static class Factory
+            implements ParserFactory<List<Stop>>
+    {
+        @Override
+        public JsonParser<List<Stop>> create( final KnowTimeAccess knowTime, final CacheableResponse res ) {
+            return new StopsParser( knowTime, res.getData() );
+        }
+    }
+
+
+    public StopsParser( final KnowTimeAccess knowTime, final String json ) {
+        mKnowTime = knowTime;
         mJson = json;
     }
 
@@ -33,7 +47,7 @@ public class StopsParser
             final Location location = new Location( (float) locObj.getDouble( "lat" ),
                                                     (float) locObj.getDouble( "lng" ) );
 
-            stops.add( new Stop( obj.getInt( "stopNumber" ), obj.getString( "name" ), location ) );
+            stops.add( new Stop( mKnowTime, obj.getInt( "stopNumber" ), obj.getString( "name" ), location ) );
         }
 
         return stops;

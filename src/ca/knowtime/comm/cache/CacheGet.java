@@ -1,6 +1,7 @@
 package ca.knowtime.comm.cache;
 
 import ca.knowtime.comm.HttpClient;
+import ca.knowtime.comm.KnowTimeAccess;
 import ca.knowtime.comm.cache.keys.CacheKey;
 import ca.knowtime.comm.parsers.ParserFactory;
 import org.apache.http.client.methods.HttpGet;
@@ -12,13 +13,16 @@ import java.net.URI;
 
 public class CacheGet<T>
 {
+    private final KnowTimeAccess mKnowTime;
     private final KnowTimeCache mCache;
     private final ParserFactory<T> mParserFactory;
     private final URI mUri;
     private final CacheKey mKey;
 
 
-    public CacheGet( final KnowTimeCache cache, final ParserFactory<T> parserFactory, final URI uri, final CacheKey key ) {
+    public CacheGet( final KnowTimeAccess knowTime, final KnowTimeCache cache, final ParserFactory<T> parserFactory,
+                     final URI uri, final CacheKey key ) {
+        mKnowTime = knowTime;
         mCache = cache;
         mParserFactory = parserFactory;
         mUri = uri;
@@ -39,7 +43,7 @@ public class CacheGet<T>
         final T data;
         switch( res.getCode() ) {
             case 200:
-                data = mParserFactory.create( res ).get();
+                data = mParserFactory.create( mKnowTime, res ).get();
                 mCache.put( mKey, data, res.getETag() );
                 break;
             case 304:
