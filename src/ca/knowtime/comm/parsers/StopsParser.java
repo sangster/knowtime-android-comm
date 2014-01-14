@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StopsParser
+        implements JsonParser<List<Stop>>
 {
     private final String mJson;
 
@@ -20,7 +21,7 @@ public class StopsParser
     }
 
 
-    public List<Stop> getStops()
+    public List<Stop> get()
             throws JSONException {
         final List<Stop> stops = new ArrayList<Stop>();
         final JSONArray array = new JSONArray( mJson );

@@ -1,19 +1,27 @@
 package ca.knowtime.comm;
 
-import ca.knowtime.comm.exceptions.CacheElementNotFound;
+import ca.knowtime.comm.cache.CacheGet;
+import ca.knowtime.comm.cache.CacheableResponse;
+import ca.knowtime.comm.cache.DummyCache;
+import ca.knowtime.comm.cache.KnowTimeCache;
+import ca.knowtime.comm.cache.keys.StopsKey;
+import ca.knowtime.comm.parsers.JsonParser;
+import ca.knowtime.comm.parsers.ParserFactory;
 import ca.knowtime.comm.parsers.StopsParser;
+import ca.knowtime.comm.types.Location;
 import ca.knowtime.comm.types.Stop;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
+import ca.knowtime.comm.types.User;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.protocol.BasicHttpContext;
+import org.apache.http.protocol.HTTP;
 import org.json.JSONException;
 
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.util.List;
+import java.util.UUID;
 
 public class KnowTimeAccessImpl
         implements KnowTimeAccess
@@ -34,55 +42,50 @@ public class KnowTimeAccessImpl
 
 
     @Override
+    public User createUser( final int routeId )
+            throws IOException {
+        final HttpPost post = new HttpPost( mBaseUrl.resolve( "users/new" ).resolve( Integer.toString( routeId ) ) );
+        final Response res = Response.create( new HttpClient().execute( post, new BasicHttpContext() ) );
+
+        switch( res.getCode() ) {
+            case 201:
+                return new User( UUID.fromString( res.getData() ), routeId, this );
+            default:
+                throw new RuntimeException( "Unknown Status Code: " + res.getCode() );
+        }
+    }
+
+
+    @Override
+    public void postLocation( final UUID userId, final Location location )
+            throws IOException {
+        final HttpPost post = new HttpPost( mBaseUrl.resolve( "user" ).resolve( userId.toString() ) );
+        post.setHeader( "Accept", "application/json" );
+        post.setHeader( "Content-Type", "application/json" );
+
+        try {
+            post.setEntity( new StringEntity( location.toJson().toString(), HTTP.UTF_8 ) );
+            final Response res = Response.create( new HttpClient().execute( post, new BasicHttpContext() ) );
+        } catch( UnsupportedEncodingException e ) {
+            throw new RuntimeException( e );
+        }
+    }
+
+
+    @Override
     public List<Stop> stops()
             throws IOException, JSONException {
-        return new StopsParser( get( mBaseUrl.resolve( "stops" ) ) ).getStops();
+        return new CacheGet<List<Stop>>( mCache, new StopsParserFactory(), mBaseUrl.resolve( "stops" ),
+                                         new StopsKey() ).get();
     }
 
 
-    private String get( final URI uri )
-            throws IOException {
-        final HttpGet httpGet = new HttpGet( uri );
-
-        final HttpResponse response = new DefaultHttpClient().execute( httpGet, new BasicHttpContext() );
-        return getAsciiContentFromEntity( response.getEntity() );
-    }
-
-
-    private String getAsciiContentFromEntity( final HttpEntity entity )
-            throws IllegalStateException, IOException {
-        final InputStream in = entity.getContent();
-
-        final StringBuffer out = new StringBuffer();
-        int n = 1;
-        while( n > 0 ) {
-            byte[] b = new byte[4096];
-            n = in.read( b );
-            if( n > 0 ) {
-                out.append( new String( b, 0, n ) );
-            }
-        }
-        return out.toString();
-    }
-
-
-    private static class DummyCache
-            implements KnowTimeCache
+    private static class StopsParserFactory
+            implements ParserFactory<List<Stop>>
     {
         @Override
-        public boolean contains( final KnowTimeCacheKey key, final String tag ) {
-            return false;
-        }
-
-
-        @Override
-        public void put( final KnowTimeCacheKey key, final String tag, final Object data ) {
-        }
-
-
-        @Override
-        public Object get( final KnowTimeCacheKey key, final String tag ) {
-            throw new CacheElementNotFound( key, tag );
+        public JsonParser<List<Stop>> create( CacheableResponse res ) {
+            return new StopsParser( res.getData() );
         }
     }
 }
