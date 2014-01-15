@@ -2,5 +2,5 @@ package ca.knowtime.comm.cache;
 
 public enum CacheCategory
 {
-    routeNames, stops, stopTimes
+    routeNames, stops, stopTimes, routePaths,
 }

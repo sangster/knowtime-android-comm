@@ -1,17 +1,21 @@
 package ca.knowtime.comm;
 
+import android.net.Uri;
 import ca.knowtime.comm.cache.CacheGet;
-import ca.knowtime.comm.cache.DummyCache;
 import ca.knowtime.comm.cache.KnowTimeCache;
 import ca.knowtime.comm.cache.keys.CacheKey;
 import ca.knowtime.comm.cache.keys.RouteNamesKey;
+import ca.knowtime.comm.cache.keys.RoutePathsKey;
 import ca.knowtime.comm.cache.keys.RoutesStopTimesKey;
 import ca.knowtime.comm.cache.keys.StopsKey;
+import ca.knowtime.comm.parsers.ParserFactory;
+import ca.knowtime.comm.parsers.PathsParser;
 import ca.knowtime.comm.parsers.PollRateParser;
 import ca.knowtime.comm.parsers.RouteNamesParser;
 import ca.knowtime.comm.parsers.RouteStopTimesParser;
 import ca.knowtime.comm.parsers.StopsParser;
 import ca.knowtime.comm.types.Location;
+import ca.knowtime.comm.types.Path;
 import ca.knowtime.comm.types.RouteName;
 import ca.knowtime.comm.types.RouteStopTimes;
 import ca.knowtime.comm.types.Stop;
@@ -25,25 +29,17 @@ import org.json.JSONException;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.URI;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
 public class KnowTimeAccessImpl
         implements KnowTimeAccess
 {
-    private final URI mBaseUrl;
+    private final Uri mBaseUrl;
     private final KnowTimeCache mCache;
 
 
-    public KnowTimeAccessImpl( final URI baseUrl ) {
-        this( baseUrl, new DummyCache() );
-    }
-
-
-    public KnowTimeAccessImpl( final URI baseUrl, final KnowTimeCache cache ) {
+    public KnowTimeAccessImpl( final Uri baseUrl, final KnowTimeCache cache ) {
         mBaseUrl = baseUrl;
         mCache = cache;
     }
@@ -52,8 +48,7 @@ public class KnowTimeAccessImpl
     @Override
     public User createUser( final int routeId )
             throws IOException {
-        final URI newUserUri = mBaseUrl.resolve( "users" ).resolve( "new" );
-        final HttpPost post = new HttpPost( newUserUri.resolve( Integer.toString( routeId ) ) );
+        final HttpPost post = post( "users", "new", Integer.toString( routeId ) );
         final Response res = Response.create( new HttpClient().execute( post, new BasicHttpContext() ) );
 
         switch( res.getCode() ) {
@@ -68,7 +63,7 @@ public class KnowTimeAccessImpl
     @Override
     public void postLocation( final UUID userId, final Location location )
             throws IOException {
-        final HttpPost post = new HttpPost( mBaseUrl.resolve( "user" ).resolve( userId.toString() ) );
+        final HttpPost post = post( "user", userId.toString() );
         post.setHeader( "Accept", "application/json" );
         post.setHeader( "Content-Type", "application/json" );
 
@@ -84,48 +79,67 @@ public class KnowTimeAccessImpl
     @Override
     public List<Stop> stops()
             throws IOException, JSONException {
-        return new CacheGet<List<Stop>>( this, mCache, new StopsParser.Factory(), mBaseUrl.resolve( "stops" ),
-                                         new StopsKey() ).get();
+        return cacheGet( new StopsParser.Factory(), new StopsKey(), "stops" ).get();
     }
 
 
     @Override
     public float pollRate()
             throws IOException, JSONException {
-        final HttpGet httpGet = new HttpGet( mBaseUrl.resolve( "pollrate" ) );
+        final HttpGet httpGet = get( "pollrate" );
         final Response res = Response.create( new HttpClient().execute( httpGet, new BasicHttpContext() ) );
-
         return new PollRateParser( res.getData() ).get();
-    }
-
-
-    @Override
-    public List<RouteStopTimes> routesStopTimes( final int stopNumber, final Date date )
-            throws IOException, JSONException {
-        final Calendar cal = Calendar.getInstance();
-        cal.setTime( date );
-
-        return routesStopTimes( stopNumber, cal.get( Calendar.YEAR ), cal.get( Calendar.MONTH ),
-                                cal.get( Calendar.DAY_OF_MONTH ) );
     }
 
 
     @Override
     public List<RouteStopTimes> routesStopTimes( final int stopNumber, final int year, final int month, final int day )
             throws IOException, JSONException {
-        final String date = String.format( "%04d-%02d-%02d", year, month, day );
-        final URI uri = mBaseUrl.resolve( "stoptimes" ).resolve( Integer.toString( stopNumber ) ).resolve( date );
-        final CacheKey key = new RoutesStopTimesKey( stopNumber, year, month, day );
+        return cacheGet( new RouteStopTimesParser.Factory(), new RoutesStopTimesKey( stopNumber, year, month, day ),
+                         "stoptimes", Integer.toString( stopNumber ), dateString( year, month, day ) ).get();
+    }
 
-        return new CacheGet<List<RouteStopTimes>>( this, mCache, new RouteStopTimesParser.Factory(), uri, key ).get();
+
+    private String dateString( final int year, final int month, final int day ) {
+        return String.format( "%04d-%02d-%02d", year, month, day );
     }
 
 
     @Override
     public List<RouteName> routeNames()
             throws IOException, JSONException {
-        return new CacheGet<List<RouteName>>( this, mCache, new RouteNamesParser.Factory(),
-                                              mBaseUrl.resolve( "routes" ).resolve( "names" ),
-                                              new RouteNamesKey() ).get();
+        return cacheGet( new RouteNamesParser.Factory(), new RouteNamesKey(), "routes", "names" ).get();
+    }
+
+
+    @Override
+    public List<Path> routePaths( final UUID routeId, final int year, final int month, final int day )
+            throws IOException, JSONException {
+        return cacheGet( new PathsParser.Factory(), new RoutePathsKey( routeId, year, month, day ), "paths",
+                         dateString( year, month, day ), routeId.toString() ).get();
+    }
+
+
+    private HttpGet get( final String... parts ) {
+        return new HttpGet( compileUri( parts ).toString() );
+    }
+
+
+    private HttpPost post( final String... parts ) {
+        return new HttpPost( compileUri( parts ).toString() );
+    }
+
+
+    private <T> CacheGet<T> cacheGet( final ParserFactory<T> factory, final CacheKey cacheKey, final String... parts ) {
+        return new CacheGet<T>( this, mCache, factory, compileUri( parts ), cacheKey );
+    }
+
+
+    private Uri compileUri( final String[] parts ) {
+        Uri.Builder builder = mBaseUrl.buildUpon();
+        for( final String part : parts ) {
+            builder = builder.appendPath( part );
+        }
+        return builder.build();
     }
 }

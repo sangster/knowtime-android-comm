@@ -1,5 +1,6 @@
 package ca.knowtime.comm.cache;
 
+import android.net.Uri;
 import ca.knowtime.comm.HttpClient;
 import ca.knowtime.comm.KnowTimeAccess;
 import ca.knowtime.comm.cache.keys.CacheKey;
@@ -9,19 +10,18 @@ import org.apache.http.protocol.BasicHttpContext;
 import org.json.JSONException;
 
 import java.io.IOException;
-import java.net.URI;
 
 public class CacheGet<T>
 {
     private final KnowTimeAccess mKnowTime;
     private final KnowTimeCache mCache;
     private final ParserFactory<T> mParserFactory;
-    private final URI mUri;
+    private final Uri mUri;
     private final CacheKey mKey;
 
 
     public CacheGet( final KnowTimeAccess knowTime, final KnowTimeCache cache, final ParserFactory<T> parserFactory,
-                     final URI uri, final CacheKey key ) {
+                     final Uri uri, final CacheKey key ) {
         mKnowTime = knowTime;
         mCache = cache;
         mParserFactory = parserFactory;
@@ -32,7 +32,7 @@ public class CacheGet<T>
 
     public T get()
             throws IOException, JSONException {
-        final HttpGet httpGet = new HttpGet( mUri );
+        final HttpGet httpGet = new HttpGet( mUri.toString() );
 
         if( mCache.contains( mKey ) ) {
             httpGet.addHeader( "If-None-Match", mCache.eTag( mKey ) );
