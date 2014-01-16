@@ -4,12 +4,11 @@ import android.net.Uri;
 import ca.knowtime.comm.HttpClient;
 import ca.knowtime.comm.KnowTimeAccess;
 import ca.knowtime.comm.cache.keys.CacheKey;
+import ca.knowtime.comm.exceptions.HttpIoException;
 import ca.knowtime.comm.parsers.ParserFactory;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.protocol.BasicHttpContext;
 import org.json.JSONException;
-
-import java.io.IOException;
 
 public class CacheGet<T>
 {
@@ -31,7 +30,7 @@ public class CacheGet<T>
 
 
     public T get()
-            throws IOException, JSONException {
+            throws HttpIoException, JSONException {
         final HttpGet httpGet = new HttpGet( mUri.toString() );
 
         if( mCache.contains( mKey ) ) {
@@ -57,7 +56,7 @@ public class CacheGet<T>
 
 
     private CacheableResponse doGetMethod( final HttpGet httpGet )
-            throws IOException {
+            throws HttpIoException {
         return CacheableResponse.create( new HttpClient().execute( httpGet, new BasicHttpContext() ) );
     }
 }

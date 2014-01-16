@@ -1,10 +1,9 @@
 package ca.knowtime.comm.cache;
 
 import ca.knowtime.comm.Response;
+import ca.knowtime.comm.exceptions.HttpIoException;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
-
-import java.io.IOException;
 
 public class CacheableResponse
         extends Response
@@ -13,7 +12,7 @@ public class CacheableResponse
 
 
     public static CacheableResponse create( final HttpResponse response )
-            throws IOException {
+            throws HttpIoException {
         final Header[] headers = response.getHeaders( "ETag" );
 
         String tag = null;

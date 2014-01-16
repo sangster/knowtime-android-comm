@@ -1,6 +1,7 @@
 package ca.knowtime.comm;
 
 
+import ca.knowtime.comm.exceptions.HttpIoException;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 
@@ -21,19 +22,23 @@ public class Response
 
 
     protected static String getAsciiContentFromEntity( final HttpEntity entity )
-            throws IllegalStateException, IOException {
-        final InputStream in = entity.getContent();
+            throws HttpIoException {
+        try {
+            final InputStream in = entity.getContent();
+            final StringBuilder out = new StringBuilder();
 
-        final StringBuffer out = new StringBuffer();
-        int n = 1;
-        while( n > 0 ) {
-            byte[] b = new byte[4096];
-            n = in.read( b );
-            if( n > 0 ) {
-                out.append( new String( b, 0, n ) );
+            int n = 1;
+            while( n > 0 ) {
+                byte[] b = new byte[4096];
+                n = in.read( b );
+                if( n > 0 ) {
+                    out.append( new String( b, 0, n ) );
+                }
             }
+            return out.toString();
+        } catch( IOException e ) {
+            throw new HttpIoException( e );
         }
-        return out.toString();
     }
 
 

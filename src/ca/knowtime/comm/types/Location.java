@@ -26,6 +26,16 @@ public class Location
     }
 
 
+    public boolean isValid() {
+        return !isZero( mLat ) && !isZero( mLng );
+    }
+
+
+    private boolean isZero( final float val ) {
+        return Math.abs( val ) < 0.00000001;
+    }
+
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder( "Location{" );

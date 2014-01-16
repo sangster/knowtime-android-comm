@@ -2,6 +2,7 @@ package ca.knowtime.comm.parsers;
 
 import ca.knowtime.comm.KnowTimeAccess;
 import ca.knowtime.comm.cache.CacheableResponse;
+import ca.knowtime.comm.exceptions.ParseException;
 import ca.knowtime.comm.types.Location;
 import ca.knowtime.comm.types.Path;
 import org.json.JSONArray;
@@ -34,15 +35,18 @@ public class PathsParser
 
 
     @Override
-    public List<Path> get()
-            throws JSONException {
-        final JSONArray arr = new JSONArray( mJson );
-        final List<Path> paths = new ArrayList<Path>( arr.length() );
+    public List<Path> get() {
+        try {
+            final JSONArray arr = new JSONArray( mJson );
+            final List<Path> paths = new ArrayList<Path>( arr.length() );
 
-        for( int i = 0, s = arr.length(); i < s; ++i ) {
-            paths.add( parsePath( arr.getJSONObject( i ) ) );
+            for( int i = 0, s = arr.length(); i < s; ++i ) {
+                paths.add( parsePath( arr.getJSONObject( i ) ) );
+            }
+            return paths;
+        } catch( final JSONException e ) {
+            throw new ParseException( e );
         }
-        return paths;
     }
 
 

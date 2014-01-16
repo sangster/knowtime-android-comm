@@ -4,16 +4,21 @@ import android.net.Uri;
 import ca.knowtime.comm.cache.CacheGet;
 import ca.knowtime.comm.cache.KnowTimeCache;
 import ca.knowtime.comm.cache.keys.CacheKey;
+import ca.knowtime.comm.cache.keys.EstimateKey;
 import ca.knowtime.comm.cache.keys.RouteNamesKey;
 import ca.knowtime.comm.cache.keys.RoutePathsKey;
 import ca.knowtime.comm.cache.keys.RoutesStopTimesKey;
 import ca.knowtime.comm.cache.keys.StopsKey;
+import ca.knowtime.comm.exceptions.HttpIoException;
+import ca.knowtime.comm.exceptions.InvalidPathPartException;
+import ca.knowtime.comm.parsers.EstimatesParser;
 import ca.knowtime.comm.parsers.ParserFactory;
 import ca.knowtime.comm.parsers.PathsParser;
 import ca.knowtime.comm.parsers.PollRateParser;
 import ca.knowtime.comm.parsers.RouteNamesParser;
 import ca.knowtime.comm.parsers.RouteStopTimesParser;
 import ca.knowtime.comm.parsers.StopsParser;
+import ca.knowtime.comm.types.Estimate;
 import ca.knowtime.comm.types.Location;
 import ca.knowtime.comm.types.Path;
 import ca.knowtime.comm.types.RouteName;
@@ -29,6 +34,7 @@ import org.json.JSONException;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.UUID;
 
@@ -120,6 +126,14 @@ public class KnowTimeAccessImpl
     }
 
 
+    @Override
+    public List<Estimate> estimatesForShortName( final String shortName )
+            throws HttpIoException, JSONException {
+        return cacheGet( new EstimatesParser.Factory(), new EstimateKey( shortName ), "estimates",
+                         "short:" + shortName ).get();
+    }
+
+
     private HttpGet get( final String... parts ) {
         return new HttpGet( compileUri( parts ).toString() );
     }
@@ -138,7 +152,11 @@ public class KnowTimeAccessImpl
     private Uri compileUri( final String[] parts ) {
         Uri.Builder builder = mBaseUrl.buildUpon();
         for( final String part : parts ) {
-            builder = builder.appendPath( part );
+            try {
+                builder = builder.appendPath( URLEncoder.encode( part, "UTF-8" ) );
+            } catch( UnsupportedEncodingException e ) {
+                throw new InvalidPathPartException( part );
+            }
         }
         return builder.build();
     }

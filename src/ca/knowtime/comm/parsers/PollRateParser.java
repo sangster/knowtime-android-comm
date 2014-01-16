@@ -1,5 +1,6 @@
 package ca.knowtime.comm.parsers;
 
+import ca.knowtime.comm.exceptions.ParseException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -15,8 +16,11 @@ public class PollRateParser
 
 
     @Override
-    public Float get()
-            throws JSONException {
-        return (float) new JSONObject( mJson ).getDouble( "rate" );
+    public Float get() {
+        try {
+            return (float) new JSONObject( mJson ).getDouble( "rate" );
+        } catch( final JSONException e ) {
+            throw new ParseException( e );
+        }
     }
 }

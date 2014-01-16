@@ -1,6 +1,6 @@
 package ca.knowtime.comm.parsers;
 
-import org.json.JSONException;
+import ca.knowtime.comm.exceptions.ParseException;
 
 /**
  *
@@ -10,5 +10,5 @@ public interface JsonParser<T>
 {
     /** @return the result of deserializing the given JSON string */
     T get()
-            throws JSONException;
+            throws ParseException;
 }

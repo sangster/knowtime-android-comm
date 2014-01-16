@@ -2,6 +2,7 @@ package ca.knowtime.comm.parsers;
 
 import ca.knowtime.comm.KnowTimeAccess;
 import ca.knowtime.comm.cache.CacheableResponse;
+import ca.knowtime.comm.exceptions.ParseException;
 import ca.knowtime.comm.types.RouteStopTimes;
 import ca.knowtime.comm.types.StopTime;
 import ca.knowtime.comm.types.StopTimePair;
@@ -35,15 +36,18 @@ public class RouteStopTimesParser
 
 
     @Override
-    public List<RouteStopTimes> get()
-            throws JSONException {
-        final JSONArray arr = new JSONArray( mJson );
-        final List<RouteStopTimes> stopTimes = new ArrayList<RouteStopTimes>( arr.length() );
+    public List<RouteStopTimes> get() {
+        try {
+            final JSONArray arr = new JSONArray( mJson );
+            final List<RouteStopTimes> stopTimes = new ArrayList<RouteStopTimes>( arr.length() );
 
-        for( int i = 0, s = arr.length(); i < s; ++i ) {
-            stopTimes.add( getRouteStopTimes( arr.getJSONObject( i ) ) );
+            for( int i = 0, s = arr.length(); i < s; ++i ) {
+                stopTimes.add( getRouteStopTimes( arr.getJSONObject( i ) ) );
+            }
+            return stopTimes;
+        } catch( final JSONException e ) {
+            throw new ParseException( e );
         }
-        return stopTimes;
     }
 
 
