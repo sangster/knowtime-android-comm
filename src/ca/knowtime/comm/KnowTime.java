@@ -8,4 +8,9 @@ public class KnowTime
     public static KnowTimeAccess connect( final Uri baseUrl, final KnowTimeCache cache ) {
         return new KnowTimeAccessImpl( baseUrl, cache );
     }
+
+
+    public static AsyncKnowTimeAccess async( final Uri baseUrl, final KnowTimeCache cache ) {
+        return new AsyncKnowTimeAccessImpl( connect( baseUrl, cache ) );
+    }
 }

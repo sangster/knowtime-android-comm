@@ -5,10 +5,11 @@ import ca.knowtime.comm.HttpClient;
 import ca.knowtime.comm.KnowTimeAccess;
 import ca.knowtime.comm.cache.keys.CacheKey;
 import ca.knowtime.comm.exceptions.HttpIoException;
+import ca.knowtime.comm.exceptions.ParseException;
+import ca.knowtime.comm.exceptions.UnexpectedReturnCodeException;
 import ca.knowtime.comm.parsers.ParserFactory;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.protocol.BasicHttpContext;
-import org.json.JSONException;
 
 public class CacheGet<T>
 {
@@ -30,7 +31,7 @@ public class CacheGet<T>
 
 
     public T get()
-            throws HttpIoException, JSONException {
+            throws HttpIoException, ParseException {
         final HttpGet httpGet = new HttpGet( mUri.toString() );
 
         if( mCache.contains( mKey ) ) {
@@ -49,7 +50,7 @@ public class CacheGet<T>
                 data = mCache.get( mKey );
                 break;
             default:
-                throw new RuntimeException( "Unknown HTTP return: " + res.getCode() );
+                throw new UnexpectedReturnCodeException( res.getCode() );
         }
         return data;
     }

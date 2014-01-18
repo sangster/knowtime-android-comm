@@ -13,6 +13,10 @@ import ca.knowtime.comm.types.User;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Provides access to the KNOWtime server. All of these methods are synchronous and will block until the request is
+ * completed.
+ */
 public interface KnowTimeAccess
 {
     User createUser( int routeId )

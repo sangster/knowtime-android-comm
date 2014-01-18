@@ -8,7 +8,7 @@ import ca.knowtime.comm.exceptions.ParseException;
  */
 public interface JsonParser<T>
 {
-    /** @return the result of deserializing the given JSON string */
+    /** @return the requestComplete of deserializing the given JSON string */
     T get()
             throws ParseException;
 }

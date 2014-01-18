@@ -15,7 +15,7 @@ public class Response
 
 
     static Response create( final HttpResponse response )
-            throws IOException {
+            throws HttpIoException {
         return new Response( response.getStatusLine().getStatusCode(),
                              getAsciiContentFromEntity( response.getEntity() ) );
     }

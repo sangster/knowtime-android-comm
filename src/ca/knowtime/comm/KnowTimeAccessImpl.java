@@ -11,6 +11,7 @@ import ca.knowtime.comm.cache.keys.RoutesStopTimesKey;
 import ca.knowtime.comm.cache.keys.StopsKey;
 import ca.knowtime.comm.exceptions.HttpIoException;
 import ca.knowtime.comm.exceptions.InvalidPathPartException;
+import ca.knowtime.comm.exceptions.ParseException;
 import ca.knowtime.comm.parsers.EstimatesParser;
 import ca.knowtime.comm.parsers.ParserFactory;
 import ca.knowtime.comm.parsers.PathsParser;
@@ -30,9 +31,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HTTP;
-import org.json.JSONException;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.List;
@@ -53,7 +52,7 @@ public class KnowTimeAccessImpl
 
     @Override
     public User createUser( final int routeId )
-            throws IOException {
+            throws HttpIoException {
         final HttpPost post = post( "users", "new", Integer.toString( routeId ) );
         final Response res = Response.create( new HttpClient().execute( post, new BasicHttpContext() ) );
 
@@ -68,7 +67,7 @@ public class KnowTimeAccessImpl
 
     @Override
     public void postLocation( final UUID userId, final Location location )
-            throws IOException {
+            throws HttpIoException {
         final HttpPost post = post( "user", userId.toString() );
         post.setHeader( "Accept", "application/json" );
         post.setHeader( "Content-Type", "application/json" );
@@ -84,14 +83,14 @@ public class KnowTimeAccessImpl
 
     @Override
     public List<Stop> stops()
-            throws IOException, JSONException {
+            throws HttpIoException, ParseException {
         return cacheGet( new StopsParser.Factory(), new StopsKey(), "stops" ).get();
     }
 
 
     @Override
     public float pollRate()
-            throws IOException, JSONException {
+            throws HttpIoException, ParseException {
         final HttpGet httpGet = get( "pollrate" );
         final Response res = Response.create( new HttpClient().execute( httpGet, new BasicHttpContext() ) );
         return new PollRateParser( res.getData() ).get();
@@ -100,7 +99,7 @@ public class KnowTimeAccessImpl
 
     @Override
     public List<RouteStopTimes> routesStopTimes( final int stopNumber, final int year, final int month, final int day )
-            throws IOException, JSONException {
+            throws HttpIoException, ParseException {
         return cacheGet( new RouteStopTimesParser.Factory(), new RoutesStopTimesKey( stopNumber, year, month, day ),
                          "stoptimes", Integer.toString( stopNumber ), dateString( year, month, day ) ).get();
     }
@@ -113,14 +112,14 @@ public class KnowTimeAccessImpl
 
     @Override
     public List<RouteName> routeNames()
-            throws IOException, JSONException {
+            throws HttpIoException, ParseException {
         return cacheGet( new RouteNamesParser.Factory(), new RouteNamesKey(), "routes", "names" ).get();
     }
 
 
     @Override
     public List<Path> routePaths( final UUID routeId, final int year, final int month, final int day )
-            throws IOException, JSONException {
+            throws HttpIoException, ParseException {
         return cacheGet( new PathsParser.Factory(), new RoutePathsKey( routeId, year, month, day ), "paths",
                          dateString( year, month, day ), routeId.toString() ).get();
     }
@@ -128,7 +127,7 @@ public class KnowTimeAccessImpl
 
     @Override
     public List<Estimate> estimatesForShortName( final String shortName )
-            throws HttpIoException, JSONException {
+            throws HttpIoException, ParseException {
         return cacheGet( new EstimatesParser.Factory(), new EstimateKey( shortName ), "estimates",
                          "short:" + shortName ).get();
     }
