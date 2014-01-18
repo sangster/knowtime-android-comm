@@ -1,10 +1,16 @@
 package ca.knowtime.comm;
 
-import java.net.URI;
+import android.net.Uri;
+import ca.knowtime.comm.cache.KnowTimeCache;
 
 public class KnowTime
 {
-    public static KnowTimeAccess connect( final URI baseUrl ) {
-        return new KnowTimeAccessImpl( baseUrl );
+    public static KnowTimeAccess connect( final Uri baseUrl, final KnowTimeCache cache ) {
+        return new KnowTimeAccessImpl( baseUrl, cache );
+    }
+
+
+    public static AsyncKnowTimeAccess async( final Uri baseUrl, final KnowTimeCache cache ) {
+        return new AsyncKnowTimeAccessImpl( connect( baseUrl, cache ) );
     }
 }

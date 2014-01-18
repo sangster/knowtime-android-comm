@@ -1,6 +1,9 @@
 package ca.knowtime.comm.types;
 
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class Location
 {
     private final float mLat;
@@ -23,6 +26,16 @@ public class Location
     }
 
 
+    public boolean isValid() {
+        return !isZero( mLat ) && !isZero( mLng );
+    }
+
+
+    private boolean isZero( final float val ) {
+        return Math.abs( val ) < 0.00000001;
+    }
+
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder( "Location{" );
@@ -30,5 +43,17 @@ public class Location
         sb.append( ", " ).append( mLng );
         sb.append( '}' );
         return sb.toString();
+    }
+
+
+    public JSONObject toJson() {
+        try {
+            final JSONObject obj = new JSONObject();
+            obj.put( "lat", mLat );
+            obj.put( "lng", mLng );
+            return obj;
+        } catch( final JSONException e ) {
+            throw new RuntimeException( e );
+        }
     }
 }
