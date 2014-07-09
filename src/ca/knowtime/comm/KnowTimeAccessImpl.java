@@ -52,9 +52,10 @@ public class KnowTimeAccessImpl
 
     @Override
     public User createUser( final int routeId )
-            throws HttpIoException {
+    throws HttpIoException {
         final HttpPost post = post( "users", "new", Integer.toString( routeId ) );
-        final Response res = Response.create( new HttpClient().execute( post, new BasicHttpContext() ) );
+        final Response res = Response.create(
+                new HttpClient().execute( post, new BasicHttpContext() ) );
 
         switch( res.getCode() ) {
             case 201:
@@ -67,14 +68,15 @@ public class KnowTimeAccessImpl
 
     @Override
     public void postLocation( final UUID userId, final Location location )
-            throws HttpIoException {
+    throws HttpIoException {
         final HttpPost post = post( "user", userId.toString() );
         post.setHeader( "Accept", "application/json" );
         post.setHeader( "Content-Type", "application/json" );
 
         try {
             post.setEntity( new StringEntity( location.toJson().toString(), HTTP.UTF_8 ) );
-            final Response res = Response.create( new HttpClient().execute( post, new BasicHttpContext() ) );
+            final Response res = Response.create(
+                    new HttpClient().execute( post, new BasicHttpContext() ) );
         } catch( UnsupportedEncodingException e ) {
             throw new RuntimeException( e );
         }
@@ -83,25 +85,28 @@ public class KnowTimeAccessImpl
 
     @Override
     public List<Stop> stops()
-            throws HttpIoException, ParseException {
+    throws HttpIoException, ParseException {
         return cacheGet( new StopsParser.Factory(), new StopsKey(), "stops" ).get();
     }
 
 
     @Override
     public float pollRate()
-            throws HttpIoException, ParseException {
+    throws HttpIoException, ParseException {
         final HttpGet httpGet = get( "pollrate" );
-        final Response res = Response.create( new HttpClient().execute( httpGet, new BasicHttpContext() ) );
+        final Response res = Response.create(
+                new HttpClient().execute( httpGet, new BasicHttpContext() ) );
         return new PollRateParser( res.getData() ).get();
     }
 
 
     @Override
-    public List<RouteStopTimes> routesStopTimes( final int stopNumber, final int year, final int month, final int day )
-            throws HttpIoException, ParseException {
-        return cacheGet( new RouteStopTimesParser.Factory(), new RoutesStopTimesKey( stopNumber, year, month, day ),
-                         "stoptimes", Integer.toString( stopNumber ), dateString( year, month, day ) ).get();
+    public List<RouteStopTimes> routesStopTimes( final int stopNumber, final int year,
+                                                 final int month, final int day )
+    throws HttpIoException, ParseException {
+        return cacheGet( new RouteStopTimesParser.Factory(),
+                         new RoutesStopTimesKey( stopNumber, year, month, day ), "stoptimes",
+                         Integer.toString( stopNumber ), dateString( year, month, day ) ).get();
     }
 
 
@@ -112,22 +117,24 @@ public class KnowTimeAccessImpl
 
     @Override
     public List<RouteName> routeNames()
-            throws HttpIoException, ParseException {
-        return cacheGet( new RouteNamesParser.Factory(), new RouteNamesKey(), "routes", "names" ).get();
+    throws HttpIoException, ParseException {
+        return cacheGet( new RouteNamesParser.Factory(), new RouteNamesKey(), "routes",
+                         "names" ).get();
     }
 
 
     @Override
-    public List<Path> routePaths( final UUID routeId, final int year, final int month, final int day )
-            throws HttpIoException, ParseException {
-        return cacheGet( new PathsParser.Factory(), new RoutePathsKey( routeId, year, month, day ), "paths",
-                         dateString( year, month, day ), routeId.toString() ).get();
+    public List<Path> routePaths( final UUID routeId, final int year, final int month,
+                                  final int day )
+    throws HttpIoException, ParseException {
+        return cacheGet( new PathsParser.Factory(), new RoutePathsKey( routeId, year, month, day ),
+                         "paths", dateString( year, month, day ), routeId.toString() ).get();
     }
 
 
     @Override
     public List<Estimate> estimatesForShortName( final String shortName )
-            throws HttpIoException, ParseException {
+    throws HttpIoException, ParseException {
         return cacheGet( new EstimatesParser.Factory(), new EstimateKey( shortName ), "estimates",
                          "short:" + shortName ).get();
     }
@@ -143,7 +150,8 @@ public class KnowTimeAccessImpl
     }
 
 
-    private <T> CacheGet<T> cacheGet( final ParserFactory<T> factory, final CacheKey cacheKey, final String... parts ) {
+    private <T> CacheGet<T> cacheGet( final ParserFactory<T> factory, final CacheKey cacheKey,
+                                      final String... parts ) {
         return new CacheGet<T>( this, mCache, factory, compileUri( parts ), cacheKey );
     }
 

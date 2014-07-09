@@ -61,8 +61,8 @@ public class AsyncKnowTimeAccessImpl
 
 
     @Override
-    public AsyncGet<List<RouteStopTimes>> routesStopTimes( final int stopNumber, final int year, final int month,
-                                                           final int day ) {
+    public AsyncGet<List<RouteStopTimes>> routesStopTimes( final int stopNumber, final int year,
+                                                           final int month, final int day ) {
         return AsyncGet.create( new Action<List<RouteStopTimes>>()
         {
             @Override
@@ -86,7 +86,8 @@ public class AsyncKnowTimeAccessImpl
 
 
     @Override
-    public AsyncGet<List<Path>> routePaths( final UUID routeId, final int year, final int month, final int day ) {
+    public AsyncGet<List<Path>> routePaths( final UUID routeId, final int year, final int month,
+                                            final int day ) {
         return AsyncGet.create( new Action<List<Path>>()
         {
             @Override

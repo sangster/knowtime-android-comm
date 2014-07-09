@@ -14,15 +14,15 @@ public class Response
     private final String mData;
 
 
-    static Response create( final HttpResponse response )
-            throws HttpIoException {
+    public static Response create( final HttpResponse response )
+    throws HttpIoException {
         return new Response( response.getStatusLine().getStatusCode(),
                              getAsciiContentFromEntity( response.getEntity() ) );
     }
 
 
     protected static String getAsciiContentFromEntity( final HttpEntity entity )
-            throws HttpIoException {
+    throws HttpIoException {
         try {
             final InputStream in = entity.getContent();
             final StringBuilder out = new StringBuilder();

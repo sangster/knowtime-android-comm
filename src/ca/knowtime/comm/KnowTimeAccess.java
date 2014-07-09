@@ -14,32 +14,33 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * Provides access to the KNOWtime server. All of these methods are synchronous and will block until the request is
- * completed.
+ * Provides access to the KNOWtime server. All of these methods are synchronous and will block until
+ * the request is completed.
  */
 public interface KnowTimeAccess
 {
     User createUser( int routeId )
-            throws HttpIoException;
+    throws HttpIoException;
 
     void postLocation( UUID userId, Location location )
-            throws HttpIoException;
+    throws HttpIoException;
 
     List<Stop> stops()
-            throws HttpIoException, ParseException;
+    throws HttpIoException, ParseException;
 
     float pollRate()
-            throws HttpIoException, ParseException;
+    throws HttpIoException, ParseException;
 
-    List<RouteStopTimes> routesStopTimes( final int stopNumber, final int year, final int month, final int day )
-            throws HttpIoException, ParseException;
+    List<RouteStopTimes> routesStopTimes( final int stopNumber, final int year, final int month,
+                                          final int day )
+    throws HttpIoException, ParseException;
 
     List<RouteName> routeNames()
-            throws HttpIoException, ParseException;
+    throws HttpIoException, ParseException;
 
     List<Path> routePaths( final UUID routeId, final int year, final int month, final int day )
-            throws HttpIoException, ParseException;
+    throws HttpIoException, ParseException;
 
     List<Estimate> estimatesForShortName( final String shortName )
-            throws HttpIoException, ParseException;
+    throws HttpIoException, ParseException;
 }
