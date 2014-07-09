@@ -1,162 +1,96 @@
 package ca.knowtime.comm;
 
 import android.net.Uri;
-import ca.knowtime.comm.cache.CacheGet;
-import ca.knowtime.comm.cache.KnowTimeCache;
-import ca.knowtime.comm.cache.keys.CacheKey;
-import ca.knowtime.comm.cache.keys.EstimateKey;
-import ca.knowtime.comm.cache.keys.RouteNamesKey;
-import ca.knowtime.comm.cache.keys.RoutePathsKey;
-import ca.knowtime.comm.cache.keys.RoutesStopTimesKey;
-import ca.knowtime.comm.cache.keys.StopsKey;
-import ca.knowtime.comm.exceptions.HttpIoException;
 import ca.knowtime.comm.exceptions.InvalidPathPartException;
-import ca.knowtime.comm.exceptions.ParseException;
-import ca.knowtime.comm.parsers.EstimatesParser;
+import ca.knowtime.comm.parsers.DataSetSummariesParser;
 import ca.knowtime.comm.parsers.ParserFactory;
-import ca.knowtime.comm.parsers.PathsParser;
-import ca.knowtime.comm.parsers.PollRateParser;
-import ca.knowtime.comm.parsers.RouteNamesParser;
-import ca.knowtime.comm.parsers.RouteStopTimesParser;
 import ca.knowtime.comm.parsers.StopsParser;
-import ca.knowtime.comm.types.Estimate;
-import ca.knowtime.comm.types.Location;
-import ca.knowtime.comm.types.Path;
-import ca.knowtime.comm.types.RouteName;
-import ca.knowtime.comm.types.RouteStopTimes;
+import ca.knowtime.comm.responses.InnerObjectResponse;
+import ca.knowtime.comm.responses.VoidResponse;
+import ca.knowtime.comm.types.DataSetSummary;
+import ca.knowtime.comm.types.KnowtimeModel;
 import ca.knowtime.comm.types.Stop;
-import ca.knowtime.comm.types.User;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.protocol.BasicHttpContext;
-import org.apache.http.protocol.HTTP;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.JsonRequest;
+import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.List;
-import java.util.UUID;
 
 public class KnowTimeAccessImpl
         implements KnowTimeAccess
 {
+    public static final String DEFAULT_TAG = KnowTimeAccess.class.getSimpleName();
+    private final RequestQueue mRequestQueue;
     private final Uri mBaseUrl;
-    private final KnowTimeCache mCache;
 
 
-    public KnowTimeAccessImpl( final Uri baseUrl, final KnowTimeCache cache ) {
+    public KnowTimeAccessImpl( final RequestQueue requestQueue, final Uri baseUrl ) {
+        mRequestQueue = requestQueue;
         mBaseUrl = baseUrl;
-        mCache = cache;
     }
 
 
     @Override
-    public User createUser( final int routeId )
-    throws HttpIoException {
-        final HttpPost post = post( "users", "new", Integer.toString( routeId ) );
-        final Response res = Response.create(
-                new HttpClient().execute( post, new BasicHttpContext() ) );
+    public void dataSets( final Response<List<DataSetSummary>> res ) {
+        enqueueRequest( objectGetRequest( new DataSetSummariesParser.Factory(), res, "gtfs" ) );
+    }
 
-        switch( res.getCode() ) {
-            case 201:
-                return new User( UUID.fromString( res.getData() ), routeId, this );
-            default:
-                throw new RuntimeException( "Unknown Status Code: " + res.getCode() );
+
+    @Override
+    public void stops( Response<List<Stop>> res ) {
+        enqueueRequest( objectGetRequest( new StopsParser.Factory(), res, "stops" ) );
+    }
+
+
+    private <T> void enqueueRequest( Request<T> req ) {
+        req.setTag( DEFAULT_TAG );
+        mRequestQueue.add( req );
+    }
+
+
+    private void cancelRequests( Object tag ) {
+        if( mRequestQueue != null ) {
+            mRequestQueue.cancelAll( tag );
         }
     }
 
 
-    @Override
-    public void postLocation( final UUID userId, final Location location )
-    throws HttpIoException {
-        final HttpPost post = post( "user", userId.toString() );
-        post.setHeader( "Accept", "application/json" );
-        post.setHeader( "Content-Type", "application/json" );
+    private <T> JsonRequest<JSONObject> objectRequest( final int method, final KnowtimeModel body,
+                                                       ParserFactory<T> parser, Response<T> res,
+                                                       final String... parts ) {
+        final InnerObjectResponse<T> ior = new InnerObjectResponse<>( this, parser, res );
+        final JSONObject request = body == null ? null : body.toJson();
 
-        try {
-            post.setEntity( new StringEntity( location.toJson().toString(), HTTP.UTF_8 ) );
-            final Response res = Response.create(
-                    new HttpClient().execute( post, new BasicHttpContext() ) );
-        } catch( UnsupportedEncodingException e ) {
-            throw new RuntimeException( e );
-        }
+        return new JsonObjectRequest( method, compileUri( parts ), request, ior, ior );
     }
 
 
-    @Override
-    public List<Stop> stops()
-    throws HttpIoException, ParseException {
-        return cacheGet( new StopsParser.Factory(), new StopsKey(), "stops" ).get();
+    private <T> JsonRequest<JSONObject> objectRequest( final int method, final KnowtimeModel body,
+                                                       ParserFactory<T> factory, ErrorResponse res,
+                                                       final String... parts ) {
+        final InnerObjectResponse<T> ior = new InnerObjectResponse<>( this,
+                                                                      factory,
+                                                                      new VoidResponse<T>( res ) );
+
+        return new JsonObjectRequest( method,
+                                      compileUri( parts ),
+                                      body == null ? null : body.toJson(),
+                                      ior,
+                                      ior );
     }
 
 
-    @Override
-    public float pollRate()
-    throws HttpIoException, ParseException {
-        final HttpGet httpGet = get( "pollrate" );
-        final Response res = Response.create(
-                new HttpClient().execute( httpGet, new BasicHttpContext() ) );
-        return new PollRateParser( res.getData() ).get();
+    private <T> JsonRequest<JSONObject> objectGetRequest( ParserFactory<T> parser, Response<T> res,
+                                                          final String... parts ) {
+        return objectRequest( Request.Method.GET, null, parser, res, parts );
     }
 
 
-    @Override
-    public List<RouteStopTimes> routesStopTimes( final int stopNumber, final int year,
-                                                 final int month, final int day )
-    throws HttpIoException, ParseException {
-        return cacheGet( new RouteStopTimesParser.Factory(),
-                         new RoutesStopTimesKey( stopNumber, year, month, day ), "stoptimes",
-                         Integer.toString( stopNumber ), dateString( year, month, day ) ).get();
-    }
-
-
-    private String dateString( final int year, final int month, final int day ) {
-        return String.format( "%04d-%02d-%02d", year, month, day );
-    }
-
-
-    @Override
-    public List<RouteName> routeNames()
-    throws HttpIoException, ParseException {
-        return cacheGet( new RouteNamesParser.Factory(), new RouteNamesKey(), "routes",
-                         "names" ).get();
-    }
-
-
-    @Override
-    public List<Path> routePaths( final UUID routeId, final int year, final int month,
-                                  final int day )
-    throws HttpIoException, ParseException {
-        return cacheGet( new PathsParser.Factory(), new RoutePathsKey( routeId, year, month, day ),
-                         "paths", dateString( year, month, day ), routeId.toString() ).get();
-    }
-
-
-    @Override
-    public List<Estimate> estimatesForShortName( final String shortName )
-    throws HttpIoException, ParseException {
-        return cacheGet( new EstimatesParser.Factory(), new EstimateKey( shortName ), "estimates",
-                         "short:" + shortName ).get();
-    }
-
-
-    private HttpGet get( final String... parts ) {
-        return new HttpGet( compileUri( parts ).toString() );
-    }
-
-
-    private HttpPost post( final String... parts ) {
-        return new HttpPost( compileUri( parts ).toString() );
-    }
-
-
-    private <T> CacheGet<T> cacheGet( final ParserFactory<T> factory, final CacheKey cacheKey,
-                                      final String... parts ) {
-        return new CacheGet<T>( this, mCache, factory, compileUri( parts ), cacheKey );
-    }
-
-
-    private Uri compileUri( final String[] parts ) {
+    private String compileUri( final String[] parts ) {
         Uri.Builder builder = mBaseUrl.buildUpon();
         for( final String part : parts ) {
             try {
@@ -165,6 +99,6 @@ public class KnowTimeAccessImpl
                 throw new InvalidPathPartException( part );
             }
         }
-        return builder.build();
+        return builder.build().toString();
     }
 }

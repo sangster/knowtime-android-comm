@@ -1,7 +1,6 @@
 package ca.knowtime.comm.parsers;
 
 import ca.knowtime.comm.KnowTimeAccess;
-import ca.knowtime.comm.cache.CacheableResponse;
 import ca.knowtime.comm.exceptions.ParseException;
 import ca.knowtime.comm.types.RouteStopTimes;
 import ca.knowtime.comm.types.StopTime;
@@ -17,20 +16,21 @@ import java.util.UUID;
 public class RouteStopTimesParser
         implements JsonParser<List<RouteStopTimes>>
 {
-    private final String mJson;
+    private final JSONObject mJson;
 
 
-    public static class Factory
+    public static class FactoryObject
             implements ParserFactory<List<RouteStopTimes>>
     {
         @Override
-        public JsonParser<List<RouteStopTimes>> create( final KnowTimeAccess knowTime, final CacheableResponse res ) {
-            return new RouteStopTimesParser( res.getData() );
+        public JsonParser<List<RouteStopTimes>> create( final KnowTimeAccess knowTime,
+                                                        final JSONObject res ) {
+            return new RouteStopTimesParser( res );
         }
     }
 
 
-    public RouteStopTimesParser( final String json ) {
+    public RouteStopTimesParser( final JSONObject json ) {
         mJson = json;
     }
 
@@ -38,7 +38,7 @@ public class RouteStopTimesParser
     @Override
     public List<RouteStopTimes> get() {
         try {
-            final JSONArray arr = new JSONArray( mJson );
+            final JSONArray arr = mJson.getJSONArray( "stopTimes" );
             final List<RouteStopTimes> stopTimes = new ArrayList<RouteStopTimes>( arr.length() );
 
             for( int i = 0, s = arr.length(); i < s; ++i ) {
@@ -52,7 +52,7 @@ public class RouteStopTimesParser
 
 
     private RouteStopTimes getRouteStopTimes( final JSONObject obj )
-            throws JSONException {
+    throws JSONException {
         final UUID routeId = UUID.fromString( obj.getString( "routeId" ) );
         final String shortName = obj.getString( "shortName" );
         final String longName = obj.getString( "longName" );
@@ -63,7 +63,7 @@ public class RouteStopTimesParser
 
 
     private List<StopTimePair> parseStopTimes( final JSONArray array )
-            throws JSONException {
+    throws JSONException {
         final List<StopTimePair> stopTimes = new ArrayList<StopTimePair>( array.length() );
 
         for( int i = 0, s = array.length(); i < s; ++i ) {

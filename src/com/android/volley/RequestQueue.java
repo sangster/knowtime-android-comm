@@ -77,7 +77,7 @@ public class RequestQueue {
     /** Network interface for performing requests. */
     private final Network mNetwork;
 
-    /** Response delivery mechanism. */
+    /** OldResponse delivery mechanism. */
     private final ResponseDelivery mDelivery;
 
     /** The network dispatchers. */

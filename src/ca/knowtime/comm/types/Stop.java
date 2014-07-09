@@ -1,10 +1,6 @@
 package ca.knowtime.comm.types;
 
 import ca.knowtime.comm.KnowTimeAccess;
-import org.json.JSONException;
-
-import java.io.IOException;
-import java.util.List;
 
 public class Stop
 {
@@ -37,10 +33,10 @@ public class Stop
     }
 
 
-    public List<RouteStopTimes> stopTimes( final int year, final int month, final int day )
-            throws IOException, JSONException {
-        return mKnowTime.routesStopTimes( mStopNumber, year, month, day );
-    }
+//    public List<RouteStopTimes> stopTimes( final int year, final int month, final int day )
+//            throws IOException, JSONException {
+//        return mKnowTime.routesStopTimes( mStopNumber, year, month, day );
+//    }
 
 
     @Override

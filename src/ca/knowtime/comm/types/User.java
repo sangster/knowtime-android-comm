@@ -2,7 +2,6 @@ package ca.knowtime.comm.types;
 
 import ca.knowtime.comm.KnowTimeAccess;
 
-import java.io.IOException;
 import java.util.UUID;
 
 public class User
@@ -19,10 +18,10 @@ public class User
     }
 
 
-    public void postLocation( final Location location )
-            throws IOException {
-        mKnowTime.postLocation( mUserId, location );
-    }
+//    public void postLocation( final Location location )
+//            throws IOException {
+//        mKnowTime.postLocation( , mUserId, location );
+//    }
 
 
     public UUID getUserId() {

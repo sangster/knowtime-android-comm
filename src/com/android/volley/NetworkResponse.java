@@ -28,7 +28,7 @@ public class NetworkResponse {
     /**
      * Creates a new network response.
      * @param statusCode the HTTP status code
-     * @param data Response body
+     * @param data OldResponse body
      * @param headers Headers returned with this response, or null for none
      * @param notModified True if the server returned a 304 and the data was already in cache
      */
@@ -54,7 +54,7 @@ public class NetworkResponse {
     /** Raw data from this response. */
     public final byte[] data;
 
-    /** Response headers. */
+    /** OldResponse headers. */
     public final Map<String, String> headers;
 
     /** True if the server returned a 304 (Not Modified). */

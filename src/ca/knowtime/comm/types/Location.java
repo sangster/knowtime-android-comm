@@ -5,6 +5,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Location
+        implements KnowtimeModel
 {
     private final float mLat;
     private final float mLng;
@@ -46,6 +47,7 @@ public class Location
     }
 
 
+    @Override
     public JSONObject toJson() {
         try {
             final JSONObject obj = new JSONObject();

@@ -526,7 +526,7 @@ public abstract class Request<T> implements Comparable<Request<T>> {
      * and return an appropriate response type. This method will be
      * called from a worker thread.  The response will not be delivered
      * if you return null.
-     * @param response Response from the network
+     * @param response OldResponse from the network
      * @return The parsed response, or null in the case of an error
      */
     abstract protected Response<T> parseNetworkResponse(NetworkResponse response);
