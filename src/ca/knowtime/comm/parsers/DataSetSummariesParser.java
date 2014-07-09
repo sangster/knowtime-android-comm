@@ -13,6 +13,7 @@ import java.util.List;
 public class DataSetSummariesParser
         implements JsonParser<List<DataSetSummary>>
 {
+    private final KnowTimeAccess mKnowTime;
     private final JSONObject mJson;
 
 
@@ -22,12 +23,13 @@ public class DataSetSummariesParser
         @Override
         public JsonParser<List<DataSetSummary>> create( final KnowTimeAccess knowTime,
                                                         final JSONObject res ) {
-            return new DataSetSummariesParser( res );
+            return new DataSetSummariesParser( knowTime, res );
         }
     }
 
 
-    public DataSetSummariesParser( final JSONObject json ) {
+    public DataSetSummariesParser( final KnowTimeAccess knowTime, final JSONObject json ) {
+        mKnowTime = knowTime;
         mJson = json;
     }
 
@@ -36,11 +38,12 @@ public class DataSetSummariesParser
     public List<DataSetSummary> get()
     throws ParseException {
         try {
-            final JSONArray arr = mJson.getJSONArray( "dataSets" );
+            final JSONArray arr = mJson.getJSONArray( "data_sets" );
             final List<DataSetSummary> summaries = new ArrayList<>( arr.length() );
             for( int i = 0, s = arr.length(); i < s; ++i ) {
                 final JSONObject obj = arr.getJSONObject( i );
-                summaries.add( new DataSetSummary( obj.getInt( "id" ),
+                summaries.add( new DataSetSummary( mKnowTime,
+                                                   obj.getInt( "id" ),
                                                    obj.getString( "name" ),
                                                    obj.getString( "url" ),
                                                    obj.getString( "etag" ),

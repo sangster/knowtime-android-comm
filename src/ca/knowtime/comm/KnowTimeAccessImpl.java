@@ -2,11 +2,13 @@ package ca.knowtime.comm;
 
 import android.net.Uri;
 import ca.knowtime.comm.exceptions.InvalidPathPartException;
+import ca.knowtime.comm.parsers.AgenciesParser;
 import ca.knowtime.comm.parsers.DataSetSummariesParser;
 import ca.knowtime.comm.parsers.ParserFactory;
 import ca.knowtime.comm.parsers.StopsParser;
 import ca.knowtime.comm.responses.InnerObjectResponse;
 import ca.knowtime.comm.responses.VoidResponse;
+import ca.knowtime.comm.types.Agency;
 import ca.knowtime.comm.types.DataSetSummary;
 import ca.knowtime.comm.types.KnowtimeModel;
 import ca.knowtime.comm.types.Stop;
@@ -41,8 +43,22 @@ public class KnowTimeAccessImpl
 
 
     @Override
-    public void stops( Response<List<Stop>> res ) {
-        enqueueRequest( objectGetRequest( new StopsParser.Factory(), res, "stops" ) );
+    public void stops( final int dataSetId, Response<List<Stop>> res ) {
+        enqueueRequest( objectGetRequest( new StopsParser.Factory(),
+                                          res,
+                                          "gtfs",
+                                          dataSetId,
+                                          "stops" ) );
+    }
+
+
+    @Override
+    public void agencies( final int dataSetId, final Response<List<Agency>> response ) {
+        enqueueRequest( objectGetRequest( new AgenciesParser.Factory(),
+                                          response,
+                                          "gtfs",
+                                          dataSetId,
+                                          "agencies" ) );
     }
 
 
@@ -61,7 +77,7 @@ public class KnowTimeAccessImpl
 
     private <T> JsonRequest<JSONObject> objectRequest( final int method, final KnowtimeModel body,
                                                        ParserFactory<T> parser, Response<T> res,
-                                                       final String... parts ) {
+                                                       final Object... parts ) {
         final InnerObjectResponse<T> ior = new InnerObjectResponse<>( this, parser, res );
         final JSONObject request = body == null ? null : body.toJson();
 
@@ -71,7 +87,7 @@ public class KnowTimeAccessImpl
 
     private <T> JsonRequest<JSONObject> objectRequest( final int method, final KnowtimeModel body,
                                                        ParserFactory<T> factory, ErrorResponse res,
-                                                       final String... parts ) {
+                                                       final Object... parts ) {
         final InnerObjectResponse<T> ior = new InnerObjectResponse<>( this,
                                                                       factory,
                                                                       new VoidResponse<T>( res ) );
@@ -85,18 +101,18 @@ public class KnowTimeAccessImpl
 
 
     private <T> JsonRequest<JSONObject> objectGetRequest( ParserFactory<T> parser, Response<T> res,
-                                                          final String... parts ) {
+                                                          final Object... parts ) {
         return objectRequest( Request.Method.GET, null, parser, res, parts );
     }
 
 
-    private String compileUri( final String[] parts ) {
+    private String compileUri( final Object[] parts ) {
         Uri.Builder builder = mBaseUrl.buildUpon();
-        for( final String part : parts ) {
+        for( final Object part : parts ) {
             try {
-                builder = builder.appendPath( URLEncoder.encode( part, "UTF-8" ) );
+                builder = builder.appendPath( URLEncoder.encode( part.toString(), "UTF-8" ) );
             } catch( UnsupportedEncodingException e ) {
-                throw new InvalidPathPartException( part );
+                throw new InvalidPathPartException( part.toString() );
             }
         }
         return builder.build().toString();

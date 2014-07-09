@@ -1,12 +1,17 @@
 package ca.knowtime.comm.types;
 
 
+import ca.knowtime.comm.KnowTimeAccess;
+import ca.knowtime.comm.Response;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.List;
 
 public class DataSetSummary
         implements KnowtimeModel
 {
+    private final KnowTimeAccess mKnowTime;
     final int mId;
     final String mName;
     final String mUrl;
@@ -14,13 +19,19 @@ public class DataSetSummary
     final String mCreatedAt;
 
 
-    public DataSetSummary( final int id, final String name, final String url, final String etag,
-                           final String createdAt ) {
+    public DataSetSummary( final KnowTimeAccess knowTime, final int id, final String name,
+                           final String url, final String etag, final String createdAt ) {
+        mKnowTime = knowTime;
         mId = id;
         mName = name;
         mUrl = url;
         mEtag = etag;
         mCreatedAt = createdAt;
+    }
+
+
+    public void agencies( Response<List<Agency>> response ) {
+        mKnowTime.agencies( mId, response );
     }
 
 
@@ -51,5 +62,30 @@ public class DataSetSummary
         sb.append( ", CreatedAt='" ).append( mCreatedAt ).append( '\'' );
         sb.append( '}' );
         return sb.toString();
+    }
+
+
+    public int getId() {
+        return mId;
+    }
+
+
+    public String getName() {
+        return mName;
+    }
+
+
+    public String getUrl() {
+        return mUrl;
+    }
+
+
+    public String getEtag() {
+        return mEtag;
+    }
+
+
+    public String getCreatedAt() {
+        return mCreatedAt;
     }
 }

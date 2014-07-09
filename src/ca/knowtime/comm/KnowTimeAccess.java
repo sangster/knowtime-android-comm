@@ -1,5 +1,6 @@
 package ca.knowtime.comm;
 
+import ca.knowtime.comm.types.Agency;
 import ca.knowtime.comm.types.DataSetSummary;
 import ca.knowtime.comm.types.Stop;
 
@@ -13,6 +14,8 @@ public interface KnowTimeAccess
 {
     void dataSets( Response<List<DataSetSummary>> res );
 
-    void stops( Response<List<Stop>> res );
+    void agencies( int dataSetId, Response<List<Agency>> response );
+
+    void stops( int dataSetId, Response<List<Stop>> res );
 }
 
