@@ -22,8 +22,7 @@ public class PathsParser
             implements ParserFactory<List<Path>>
     {
         @Override
-        public JsonParser<List<Path>> create( final KnowTimeAccess knowTime,
-                                              final JSONObject res ) {
+        public JsonParser<List<Path>> parser( final KnowTimeAccess knowTime, final JSONObject res ) {
             return new PathsParser( res );
         }
     }

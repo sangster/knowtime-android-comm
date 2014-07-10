@@ -1,8 +1,8 @@
 package ca.knowtime.comm.types;
 
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.google.common.base.Optional;
+import com.google.common.base.Preconditions;
 
 public class Agency
         implements KnowtimeModel
@@ -10,41 +10,56 @@ public class Agency
     private final String mName;
     private final String mUrl;
     private final String mTimezone;
-    private final String mLang;
+    private final Optional<String> mId;
+    private final Optional<String> mLang;
+    private final Optional<String> mPhone;
+    private final Optional<String> mFareUrl;
 
 
-    public Agency( final String name, final String url, final String timezone, final String lang ) {
-        mName = name;
-        mUrl = url;
-        mTimezone = timezone;
-        mLang = lang;
+    public Agency( final String name, final String url, final String timezone,
+                   final Optional<String> id, final Optional<String> lang,
+                   final Optional<String> phone, final Optional<String> fareUrl ) {
+        mName = Preconditions.checkNotNull( name );
+        mUrl = Preconditions.checkNotNull( url );
+        mTimezone = Preconditions.checkNotNull( timezone );
+        mId = Preconditions.checkNotNull( id );
+        mLang = Preconditions.checkNotNull( lang );
+        mPhone = Preconditions.checkNotNull( phone );
+        mFareUrl = Preconditions.checkNotNull( fareUrl );
     }
 
 
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder( "Agency{" );
-        sb.append( "Name='" ).append( mName ).append( '\'' );
-        sb.append( ", Url='" ).append( mUrl ).append( '\'' );
-        sb.append( ", Timezone='" ).append( mTimezone ).append( '\'' );
-        sb.append( ", Lang='" ).append( mLang ).append( '\'' );
-        sb.append( '}' );
-        return sb.toString();
+    public String getName() {
+        return mName;
     }
 
 
-    @Override
-    public JSONObject toJson() {
+    public String getUrl() {
+        return mUrl;
+    }
 
-        try {
-            final JSONObject obj = new JSONObject();
-            obj.put( "name", mName );
-            obj.put( "url", mUrl );
-            obj.put( "timezone", mTimezone );
-            obj.put( "lang", mLang );
-            return obj;
-        } catch( final JSONException e ) {
-            throw new RuntimeException( e );
-        }
+
+    public String getTimezone() {
+        return mTimezone;
+    }
+
+
+    public Optional<String> getId() {
+        return mId;
+    }
+
+
+    public Optional<String> getLang() {
+        return mLang;
+    }
+
+
+    public Optional<String> getPhone() {
+        return mPhone;
+    }
+
+
+    public Optional<String> getFareUrl() {
+        return mFareUrl;
     }
 }

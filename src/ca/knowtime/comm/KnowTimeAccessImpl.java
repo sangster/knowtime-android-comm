@@ -2,16 +2,20 @@ package ca.knowtime.comm;
 
 import android.net.Uri;
 import ca.knowtime.comm.exceptions.InvalidPathPartException;
-import ca.knowtime.comm.parsers.AgenciesParser;
+import ca.knowtime.comm.parsers.AgencyParser;
 import ca.knowtime.comm.parsers.DataSetSummariesParser;
 import ca.knowtime.comm.parsers.ParserFactory;
+import ca.knowtime.comm.parsers.RouteParser;
 import ca.knowtime.comm.parsers.StopsParser;
+import ca.knowtime.comm.parsers.TripParser;
 import ca.knowtime.comm.responses.InnerObjectResponse;
 import ca.knowtime.comm.responses.VoidResponse;
 import ca.knowtime.comm.types.Agency;
 import ca.knowtime.comm.types.DataSetSummary;
-import ca.knowtime.comm.types.KnowtimeModel;
+import ca.knowtime.comm.types.PostableKnowtimeModel;
+import ca.knowtime.comm.types.Route;
 import ca.knowtime.comm.types.Stop;
+import ca.knowtime.comm.types.Trip;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
@@ -38,27 +42,55 @@ public class KnowTimeAccessImpl
 
     @Override
     public void dataSets( final Response<List<DataSetSummary>> res ) {
-        enqueueRequest( objectGetRequest( new DataSetSummariesParser.Factory(), res, "gtfs" ) );
+        enqueueRequest( new DataSetSummariesParser.ListFactory(), res, "gtfs" );
     }
 
 
     @Override
-    public void stops( final int dataSetId, Response<List<Stop>> res ) {
-        enqueueRequest( objectGetRequest( new StopsParser.Factory(),
-                                          res,
-                                          "gtfs",
-                                          dataSetId,
-                                          "stops" ) );
+    public void dataSet( final String dataSetId, final Response<DataSetSummary> res ) {
+        enqueueRequest( new DataSetSummariesParser.Factory(), res, "gtfs", dataSetId );
     }
 
 
     @Override
-    public void agencies( final int dataSetId, final Response<List<Agency>> response ) {
-        enqueueRequest( objectGetRequest( new AgenciesParser.Factory(),
-                                          response,
-                                          "gtfs",
-                                          dataSetId,
-                                          "agencies" ) );
+    public void agencies( final String dataSetId, final Response<List<Agency>> res ) {
+        enqueueRequest( new AgencyParser.ListFactory(), res, "gtfs", dataSetId, "agencies" );
+    }
+
+
+    @Override
+    public void stops( final String dataSetId, Response<List<Stop>> res ) {
+        enqueueRequest( new StopsParser.ListFactory(), res, "gtfs", dataSetId, "stops" );
+    }
+
+
+    @Override
+    public void stop( final String dataSetId, final String stopId, final Response<Stop> res ) {
+        enqueueRequest( new StopsParser.Factory(), res, "gtfs", dataSetId, "stops", stopId );
+    }
+
+
+    @Override
+    public void routes( final String dataSetId, final Response<List<Route>> res ) {
+        enqueueRequest( new RouteParser.ListFactory(), res, "gtfs", dataSetId, "routes" );
+    }
+
+
+    @Override
+    public void route( final String dataSetId, final String routeId, final Response<Route> res ) {
+        enqueueRequest( new RouteParser.Factory(), res, "gtfs", dataSetId, "routes", routeId );
+    }
+
+
+    @Override
+    public void trips( final String dataSetId, final Response<List<Trip>> res ) {
+        enqueueRequest( new TripParser.ListFactory(), res, "gtfs", dataSetId, "trips" );
+    }
+
+
+    @Override
+    public void trip( final String dataSetId, final String tripId, final Response<Trip> res ) {
+        enqueueRequest( new TripParser.Factory(), res, "gtfs", dataSetId, "trips", tripId );
     }
 
 
@@ -75,9 +107,10 @@ public class KnowTimeAccessImpl
     }
 
 
-    private <T> JsonRequest<JSONObject> objectRequest( final int method, final KnowtimeModel body,
+    private <T> JsonRequest<JSONObject> objectRequest( final int method,
+                                                       final PostableKnowtimeModel body,
                                                        ParserFactory<T> parser, Response<T> res,
-                                                       final Object... parts ) {
+                                                       final String... parts ) {
         final InnerObjectResponse<T> ior = new InnerObjectResponse<>( this, parser, res );
         final JSONObject request = body == null ? null : body.toJson();
 
@@ -85,9 +118,10 @@ public class KnowTimeAccessImpl
     }
 
 
-    private <T> JsonRequest<JSONObject> objectRequest( final int method, final KnowtimeModel body,
+    private <T> JsonRequest<JSONObject> objectRequest( final int method,
+                                                       final PostableKnowtimeModel body,
                                                        ParserFactory<T> factory, ErrorResponse res,
-                                                       final Object... parts ) {
+                                                       final String... parts ) {
         final InnerObjectResponse<T> ior = new InnerObjectResponse<>( this,
                                                                       factory,
                                                                       new VoidResponse<T>( res ) );
@@ -101,8 +135,14 @@ public class KnowTimeAccessImpl
 
 
     private <T> JsonRequest<JSONObject> objectGetRequest( ParserFactory<T> parser, Response<T> res,
-                                                          final Object... parts ) {
+                                                          final String... parts ) {
         return objectRequest( Request.Method.GET, null, parser, res, parts );
+    }
+
+
+    private <T> void enqueueRequest( ParserFactory<T> parser, Response<T> res,
+                                     final String... parts ) {
+        enqueueRequest( objectRequest( Request.Method.GET, null, parser, res, parts ) );
     }
 
 

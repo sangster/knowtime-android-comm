@@ -12,14 +12,14 @@ public class InnerObjectResponse<T>
         implements Response.Listener<JSONObject>, Response.ErrorListener
 {
     private final KnowTimeAccess mAccess;
-    private final ParserFactory<T> mParser;
+    private final ParserFactory<T> mFactory;
     private final ca.knowtime.comm.Response<T> mResponse;
 
 
-    public InnerObjectResponse( final KnowTimeAccess access, final ParserFactory<T> parser,
+    public InnerObjectResponse( final KnowTimeAccess access, final ParserFactory<T> factory,
                                 final ca.knowtime.comm.Response<T> response ) {
         mAccess = access;
-        mParser = parser;
+        mFactory = factory;
         mResponse = response;
     }
 
@@ -32,14 +32,14 @@ public class InnerObjectResponse<T>
 
     @Override
     public void onResponse( final JSONObject response ) {
-        if( mParser == null ) {
+        if( mFactory == null ) {
             return;
         }
 
         final String status = getStatus( response );
 
         if( status.equals( "success" ) ) {
-            mResponse.onResponse( mParser.create( mAccess, getData( response ) ).get() );
+            mResponse.onResponse( mFactory.parser( mAccess, getData( response ) ).get() );
         }
     }
 

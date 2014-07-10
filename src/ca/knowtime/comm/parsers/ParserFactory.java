@@ -5,5 +5,5 @@ import org.json.JSONObject;
 
 public interface ParserFactory<T>
 {
-    JsonParser<T> create( KnowTimeAccess knowTime, JSONObject res );
+    JsonParser<T> parser( KnowTimeAccess knowTime, JSONObject res );
 }
