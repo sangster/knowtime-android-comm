@@ -4,6 +4,7 @@ import ca.knowtime.comm.types.Agency;
 import ca.knowtime.comm.types.DataSetSummary;
 import ca.knowtime.comm.types.Route;
 import ca.knowtime.comm.types.Stop;
+import ca.knowtime.comm.types.StopTime;
 import ca.knowtime.comm.types.Trip;
 
 import java.util.List;
@@ -28,5 +29,7 @@ public interface KnowTimeAccess
     void trips( String dataSetId, Response<List<Trip>> res );
 
     void trip( String dataSetId, String tripId, Response<Trip> res );
+
+    void stopTimes( String dataSetId, Response<List<StopTime>> res );
 }
 

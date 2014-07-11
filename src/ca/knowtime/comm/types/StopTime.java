@@ -1,97 +1,79 @@
 package ca.knowtime.comm.types;
 
-import java.util.Calendar;
-import java.util.Date;
+
+import com.google.common.base.Optional;
 
 public class StopTime
-        implements Comparable<StopTime>
 {
-    private final int mHours;
-    private final int mMinutes;
+    private final String mTripId;
+    private final String mArrivalTime;
+    private final String mDepartureTime;
+    private final String mStopId;
+    private final int mStopSequence;
+    private final Optional<String> mStopHeadsign;
+    private final Optional<Integer> mPickupType;
+    private final Optional<Integer> mDropOffType;
+    private final Optional<Float> mShapeDistTraveled;
 
 
-    public static StopTime parse( final String str ) {
-        return new StopTime( toInt( str.substring( 0, 2 ) ), toInt( str.substring( 3, 5 ) ) );
+    public StopTime( final String tripId, final String arrivalTime, final String departureTime,
+                     final String stopId, final int stopSequence,
+                     final Optional<String> stopHeadsign, final Optional<Integer> pickupType,
+                     final Optional<Integer> dropOffType,
+                     final Optional<Float> shapeDistTraveled ) {
+        mTripId = tripId;
+        mArrivalTime = arrivalTime;
+        mDepartureTime = departureTime;
+        mStopId = stopId;
+        mStopSequence = stopSequence;
+        mStopHeadsign = stopHeadsign;
+        mPickupType = pickupType;
+        mDropOffType = dropOffType;
+        mShapeDistTraveled = shapeDistTraveled;
     }
 
 
-    private static int toInt( final String str ) {
-        return Integer.parseInt( str.substring( str.charAt( 0 ) == '0' ? 1 : 0 ) );
+    public String getTripId() {
+        return mTripId;
     }
 
 
-    public StopTime( final int hours, final int minutes ) {
-        mHours = hours;
-        mMinutes = minutes;
+    public String getArrivalTime() {
+        return mArrivalTime;
     }
 
 
-    public int getHours() {
-        return mHours;
+    public String getDepartureTime() {
+        return mDepartureTime;
     }
 
 
-    public int getMinutes() {
-        return mMinutes;
+    public String getStopId() {
+        return mStopId;
     }
 
 
-    public int getMinutesPastMidnight() {
-        return mHours * 60 + mMinutes;
+    public int getStopSequence() {
+        return mStopSequence;
     }
 
 
-    public Date forToday() {
-        final Calendar cal = Calendar.getInstance();
-        return forDate( cal.get( Calendar.YEAR ),
-                        cal.get( Calendar.MONTH ),
-                        cal.get( Calendar.DAY_OF_MONTH ) );
+    public Optional<String> getStopHeadsign() {
+        return mStopHeadsign;
     }
 
 
-    public Date forDate( final int year, final int month, final int day ) {
-        final Calendar cal = Calendar.getInstance();
-        cal.set( year, month, day, 0, 0, 0 );
-        cal.add( Calendar.HOUR_OF_DAY, mHours );
-        cal.add( Calendar.MINUTE, mMinutes );
-        return cal.getTime();
+    public Optional<Integer> getPickupType() {
+        return mPickupType;
     }
 
 
-    @Override
-    public boolean equals( final Object o ) {
-        if( this == o ) {
-            return true;
-        }
-        if( !(o instanceof StopTime) ) {
-            return false;
-        }
-
-        final StopTime stopTime = (StopTime) o;
-
-        if( mHours != stopTime.mHours ) {
-            return false;
-        }
-        return mMinutes == stopTime.mMinutes;
+    public Optional<Integer> getDropOffType() {
+        return mDropOffType;
     }
 
 
-    @Override
-    public int hashCode() {
-        int result = mHours;
-        result = 31 * result + mMinutes;
-        return result;
-    }
-
-
-    @Override
-    public String toString() {
-        return String.format( "%02d:%02d", mHours, mMinutes );
-    }
-
-
-    @Override
-    public int compareTo( final StopTime other ) {
-        return getMinutesPastMidnight() - other.getMinutesPastMidnight();
+    public Optional<Float> getShapeDistTraveled() {
+        return mShapeDistTraveled;
     }
 }

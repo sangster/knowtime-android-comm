@@ -4,22 +4,22 @@ package ca.knowtime.comm.types;
 public class StopTimePair
         implements Comparable<StopTimePair>
 {
-    private final StopTime mArrival;
-    private final StopTime mDeparture;
+    private final OldStopTime mArrival;
+    private final OldStopTime mDeparture;
 
 
-    public StopTimePair( final StopTime arrival, final StopTime departure ) {
+    public StopTimePair( final OldStopTime arrival, final OldStopTime departure ) {
         mArrival = arrival;
         mDeparture = departure;
     }
 
 
-    public StopTime getArrival() {
+    public OldStopTime getArrival() {
         return mArrival;
     }
 
 
-    public StopTime getDeparture() {
+    public OldStopTime getDeparture() {
         return mDeparture;
     }
 

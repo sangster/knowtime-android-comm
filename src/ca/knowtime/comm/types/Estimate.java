@@ -4,10 +4,10 @@ public class Estimate
 {
     private final Location mLocation;
     private final int mNextStopNumber;
-    private final StopTime mEstimatedArrival;
+    private final OldStopTime mEstimatedArrival;
 
 
-    public Estimate( final Location location, final int nextStopNumber, final StopTime estimatedArrival ) {
+    public Estimate( final Location location, final int nextStopNumber, final OldStopTime estimatedArrival ) {
         mLocation = location;
         mNextStopNumber = nextStopNumber;
         mEstimatedArrival = estimatedArrival;
@@ -24,7 +24,7 @@ public class Estimate
     }
 
 
-    public StopTime getEstimatedArrival() {
+    public OldStopTime getEstimatedArrival() {
         return mEstimatedArrival;
     }
 }

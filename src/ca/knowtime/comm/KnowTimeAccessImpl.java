@@ -6,6 +6,7 @@ import ca.knowtime.comm.parsers.AgencyParser;
 import ca.knowtime.comm.parsers.DataSetSummariesParser;
 import ca.knowtime.comm.parsers.ParserFactory;
 import ca.knowtime.comm.parsers.RouteParser;
+import ca.knowtime.comm.parsers.StopTimeParser;
 import ca.knowtime.comm.parsers.StopsParser;
 import ca.knowtime.comm.parsers.TripParser;
 import ca.knowtime.comm.responses.InnerObjectResponse;
@@ -15,6 +16,7 @@ import ca.knowtime.comm.types.DataSetSummary;
 import ca.knowtime.comm.types.PostableKnowtimeModel;
 import ca.knowtime.comm.types.Route;
 import ca.knowtime.comm.types.Stop;
+import ca.knowtime.comm.types.StopTime;
 import ca.knowtime.comm.types.Trip;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -91,6 +93,12 @@ public class KnowTimeAccessImpl
     @Override
     public void trip( final String dataSetId, final String tripId, final Response<Trip> res ) {
         enqueueRequest( new TripParser.Factory(), res, "gtfs", dataSetId, "trips", tripId );
+    }
+
+
+    @Override
+    public void stopTimes( final String dataSetId, final Response<List<StopTime>> res ) {
+        enqueueRequest( new StopTimeParser.ListFactory(), res, "gtfs", dataSetId, "stop_times" );
     }
 
 
