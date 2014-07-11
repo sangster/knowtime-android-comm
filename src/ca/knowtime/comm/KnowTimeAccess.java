@@ -6,6 +6,7 @@ import ca.knowtime.comm.types.CalendarDate;
 import ca.knowtime.comm.types.DataSetSummary;
 import ca.knowtime.comm.types.FareAttribute;
 import ca.knowtime.comm.types.FareRule;
+import ca.knowtime.comm.types.FeedInfo;
 import ca.knowtime.comm.types.Frequency;
 import ca.knowtime.comm.types.Route;
 import ca.knowtime.comm.types.Shape;
@@ -64,5 +65,7 @@ public interface KnowTimeAccess
     void frequency( String dataSetId, String tripId, Response<Frequency> res );
 
     void transfers( String dataSetId, Response<List<Transfer>> res );
+
+    void feedInfos( String dataSetId, Response<List<FeedInfo>> res );
 }
 

@@ -8,6 +8,7 @@ import ca.knowtime.comm.parsers.CalendarParser;
 import ca.knowtime.comm.parsers.DataSetSummariesParser;
 import ca.knowtime.comm.parsers.FareAttributeParser;
 import ca.knowtime.comm.parsers.FareRuleParser;
+import ca.knowtime.comm.parsers.FeedInfoParser;
 import ca.knowtime.comm.parsers.FrequencyParser;
 import ca.knowtime.comm.parsers.ParserFactory;
 import ca.knowtime.comm.parsers.RouteParser;
@@ -24,6 +25,7 @@ import ca.knowtime.comm.types.CalendarDate;
 import ca.knowtime.comm.types.DataSetSummary;
 import ca.knowtime.comm.types.FareAttribute;
 import ca.knowtime.comm.types.FareRule;
+import ca.knowtime.comm.types.FeedInfo;
 import ca.knowtime.comm.types.Frequency;
 import ca.knowtime.comm.types.PostableKnowtimeModel;
 import ca.knowtime.comm.types.Route;
@@ -229,6 +231,12 @@ public class KnowTimeAccessImpl
     @Override
     public void transfers( final String dataSetId, final Response<List<Transfer>> res ) {
         enqueueRequest( new TransferParser.ListFactory(), res, "gtfs", dataSetId, "transfers" );
+    }
+
+
+    @Override
+    public void feedInfos( final String dataSetId, final Response<List<FeedInfo>> res ) {
+        enqueueRequest( new FeedInfoParser.ListFactory(), res, "gtfs", dataSetId, "feed_infos" );
     }
 
 
