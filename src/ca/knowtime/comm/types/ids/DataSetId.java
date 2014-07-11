@@ -11,7 +11,7 @@ import java.util.List;
 public class DataSetId
         extends BasicModelId
 {
-    public DataSetId( final KnowTimeAccess knowTime, final int id ) {
+    public DataSetId( final KnowTimeAccess knowTime, final String id ) {
         super( knowTime, id );
     }
 

@@ -1,14 +1,14 @@
 package ca.knowtime.comm.types;
 
 
-public class StopTimePair
-        implements Comparable<StopTimePair>
+public class OldStopTimePair
+        implements Comparable<OldStopTimePair>
 {
     private final OldStopTime mArrival;
     private final OldStopTime mDeparture;
 
 
-    public StopTimePair( final OldStopTime arrival, final OldStopTime departure ) {
+    public OldStopTimePair( final OldStopTime arrival, final OldStopTime departure ) {
         mArrival = arrival;
         mDeparture = departure;
     }
@@ -31,7 +31,7 @@ public class StopTimePair
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder( "StopTimePair{" );
+        final StringBuilder sb = new StringBuilder( "OldStopTimePair{" );
         sb.append( "arrival=" ).append( mArrival );
         sb.append( ", departure=" ).append( mDeparture );
         sb.append( '}' );
@@ -40,7 +40,7 @@ public class StopTimePair
 
 
     @Override
-    public int compareTo( final StopTimePair other ) {
+    public int compareTo( final OldStopTimePair other ) {
         return mArrival.compareTo( other.mArrival );
     }
 }

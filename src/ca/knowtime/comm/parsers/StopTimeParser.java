@@ -39,14 +39,15 @@ public class StopTimeParser
     @Override
     public StopTime get()
     throws ParseException {
-        return new StopTime( unaliasIntern( "trip_id" ).orNull(),
-                             unalias( "arrival_time" ).orNull(),
-                             unalias( "departure_time" ).orNull(),
-                             unaliasIntern( "stop_id" ).orNull(),
-                             unaliasInteger( "stop_sequence" ).orNull(),
-                             unalias( "stop_headsign" ),
-                             unaliasInteger( "pickup_type" ),
-                             unaliasInteger( "drop_off_type" ),
-                             unaliasFloat( "shape_dist_traveled" ) );
+        return new StopTime( mKnowTime,
+                             optIntern( "trip_id" ).orNull(),
+                             opt( "arrival_time" ).orNull(),
+                             opt( "departure_time" ).orNull(),
+                             optIntern( "stop_id" ).orNull(),
+                             optInteger( "stop_sequence" ).orNull(),
+                             opt( "stop_headsign" ),
+                             optInteger( "pickup_type" ),
+                             optInteger( "drop_off_type" ),
+                             optFloat( "shape_dist_traveled" ) );
     }
 }

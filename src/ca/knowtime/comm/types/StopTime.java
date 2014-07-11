@@ -1,9 +1,12 @@
 package ca.knowtime.comm.types;
 
 
+import ca.knowtime.comm.KnowTimeAccess;
 import com.google.common.base.Optional;
+import com.google.common.base.Preconditions;
 
 public class StopTime
+        extends KnowtimeModel
 {
     private final String mTripId;
     private final String mArrivalTime;
@@ -16,20 +19,21 @@ public class StopTime
     private final Optional<Float> mShapeDistTraveled;
 
 
-    public StopTime( final String tripId, final String arrivalTime, final String departureTime,
-                     final String stopId, final int stopSequence,
+    public StopTime( final KnowTimeAccess knowTime, final String tripId, final String arrivalTime,
+                     final String departureTime, final String stopId, final int stopSequence,
                      final Optional<String> stopHeadsign, final Optional<Integer> pickupType,
                      final Optional<Integer> dropOffType,
                      final Optional<Float> shapeDistTraveled ) {
-        mTripId = tripId;
-        mArrivalTime = arrivalTime;
-        mDepartureTime = departureTime;
-        mStopId = stopId;
-        mStopSequence = stopSequence;
-        mStopHeadsign = stopHeadsign;
-        mPickupType = pickupType;
-        mDropOffType = dropOffType;
-        mShapeDistTraveled = shapeDistTraveled;
+        super( knowTime );
+        mTripId = Preconditions.checkNotNull( tripId );
+        mArrivalTime = Preconditions.checkNotNull( arrivalTime );
+        mDepartureTime = Preconditions.checkNotNull( departureTime );
+        mStopId = Preconditions.checkNotNull( stopId );
+        mStopSequence = Preconditions.checkNotNull( stopSequence );
+        mStopHeadsign = Preconditions.checkNotNull( stopHeadsign );
+        mPickupType = Preconditions.checkNotNull( pickupType );
+        mDropOffType = Preconditions.checkNotNull( dropOffType );
+        mShapeDistTraveled = Preconditions.checkNotNull( shapeDistTraveled );
     }
 
 

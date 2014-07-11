@@ -40,7 +40,7 @@ public class DataSetSummariesParser
     public DataSetSummary get()
     throws ParseException {
         return new DataSetSummary( mKnowTime,
-                                   optInteger( "id" ).orNull(),
+                                   opt( "id" ).orNull(),
                                    opt( "name" ).orNull(),
                                    opt( "url" ).orNull(),
                                    opt( "etag" ).orNull(),

@@ -7,7 +7,6 @@ import com.google.common.base.Preconditions;
 
 public class DataSetSummary
         extends DataSetId
-        implements KnowtimeModel
 {
     private final String mName;
     private final String mUrl;
@@ -15,7 +14,7 @@ public class DataSetSummary
     private final String mCreatedAt;
 
 
-    public DataSetSummary( final KnowTimeAccess knowTime, final int id, final String name,
+    public DataSetSummary( final KnowTimeAccess knowTime, final String id, final String name,
                            final String url, final String etag, final String createdAt ) {
         super( knowTime, id );
         mName = Preconditions.checkNotNull( name );

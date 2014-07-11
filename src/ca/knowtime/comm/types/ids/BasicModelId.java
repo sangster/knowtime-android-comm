@@ -1,9 +1,10 @@
 package ca.knowtime.comm.types.ids;
 
 import ca.knowtime.comm.KnowTimeAccess;
+import ca.knowtime.comm.types.KnowtimeModel;
 
 public class BasicModelId
-        extends KnowtimeModelId
+        extends KnowtimeModel
 {
     protected final String mId;
 
