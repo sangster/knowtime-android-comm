@@ -1,7 +1,7 @@
 package ca.knowtime.comm.parsers;
 
 
-import ca.knowtime.comm.KnowTimeAccess;
+import ca.knowtime.comm.RestAccess;
 import ca.knowtime.comm.exceptions.ParseException;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -10,16 +10,18 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListParser<T>
-        extends JsonParser<List<T>>
+public class ListParser<T, A extends RestAccess>
+        extends JsonParser<List<T>, A>
 {
     private final String mCollectionKey;
-    private final ParserFactory<T> mElementFactory;
+    private final ParserFactory<T, A> mElementFactory;
 
 
-    public ListParser( final String collectionKey, final ParserFactory<T> elementFactory,
-                       final KnowTimeAccess knowTime, final JSONObject json ) {
-        super( "", knowTime, json );
+    public ListParser( final String collectionKey,
+                       final ParserFactory<T, A> elementFactory,
+                       final A access,
+                       final JSONObject json ) {
+        super( "", access, json );
         mCollectionKey = collectionKey;
         mElementFactory = elementFactory;
     }
@@ -32,9 +34,7 @@ public class ListParser<T>
         final JSONArray arr = getJSONArray();
 
         for( int i = 0, s = arr.length(); i < s; ++i ) {
-            final JsonParser<T> parser = mElementFactory.parser( mKnowTime,
-                                                                 getJSONObject( arr, i ) );
-            collection.add( parser.get() );
+            collection.add( mElementFactory.parser( getJSONObject( arr, i ) ).get() );
         }
         return collection;
     }

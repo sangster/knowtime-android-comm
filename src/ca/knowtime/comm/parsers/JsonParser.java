@@ -1,6 +1,6 @@
 package ca.knowtime.comm.parsers;
 
-import ca.knowtime.comm.KnowTimeAccess;
+import ca.knowtime.comm.RestAccess;
 import ca.knowtime.comm.exceptions.ParseException;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
@@ -10,17 +10,16 @@ import org.json.JSONObject;
  * @param <T>
  *         The type of object being deserialized
  */
-public abstract class JsonParser<T>
+public abstract class JsonParser<T, A extends RestAccess>
 {
     protected final String mPrefix;
-    protected final KnowTimeAccess mKnowTime;
+    protected final A mAccess;
     protected final JSONObject mJson;
 
 
-    protected JsonParser( final String prefix, final KnowTimeAccess knowTime,
-                          final JSONObject json ) {
+    protected JsonParser( final String prefix, final A access, final JSONObject json ) {
         mPrefix = Preconditions.checkNotNull( prefix );
-        mKnowTime = Preconditions.checkNotNull( knowTime );
+        mAccess = Preconditions.checkNotNull( access );
         mJson = Preconditions.checkNotNull( json );
     }
 

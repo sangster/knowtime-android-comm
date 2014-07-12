@@ -1,26 +1,25 @@
 package ca.knowtime.comm.responses;
 
-import ca.knowtime.comm.KnowTimeAccess;
+import ca.knowtime.comm.RestAccess;
 import ca.knowtime.comm.parsers.ParserFactory;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.google.common.base.Preconditions;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 
-public class InnerObjectResponse<T>
+public class InnerObjectResponse<Type, Access extends RestAccess>
         implements Response.Listener<JSONObject>, Response.ErrorListener
 {
-    private final KnowTimeAccess mAccess;
-    private final ParserFactory<T> mFactory;
-    private final ca.knowtime.comm.Response<T> mResponse;
+    private final ParserFactory<Type, Access> mFactory;
+    private final ca.knowtime.comm.Response<Type> mResponse;
 
 
-    public InnerObjectResponse( final KnowTimeAccess access, final ParserFactory<T> factory,
-                                final ca.knowtime.comm.Response<T> response ) {
-        mAccess = access;
-        mFactory = factory;
-        mResponse = response;
+    public InnerObjectResponse( final ParserFactory<Type, Access> factory,
+                                final ca.knowtime.comm.Response<Type> response ) {
+        mFactory = Preconditions.checkNotNull( factory );
+        mResponse = Preconditions.checkNotNull( response );
     }
 
 
@@ -39,7 +38,7 @@ public class InnerObjectResponse<T>
         final String status = getStatus( response );
 
         if( status.equals( "success" ) ) {
-            mResponse.onResponse( mFactory.parser( mAccess, getData( response ) ).get() );
+            mResponse.onResponse( mFactory.parser( getData( response ) ).get() );
         }
     }
 
