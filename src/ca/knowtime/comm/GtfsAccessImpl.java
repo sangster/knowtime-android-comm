@@ -18,15 +18,15 @@ import ca.knowtime.comm.models.gtfs.Trip;
 import ca.knowtime.comm.parsers.gtfs.AgencyParser;
 import ca.knowtime.comm.parsers.gtfs.CalendarDateParser;
 import ca.knowtime.comm.parsers.gtfs.CalendarParser;
-import ca.knowtime.comm.parsers.gtfs.DataSetSummariesParser;
+import ca.knowtime.comm.parsers.gtfs.DataSetSummaryParser;
 import ca.knowtime.comm.parsers.gtfs.FareAttributeParser;
 import ca.knowtime.comm.parsers.gtfs.FareRuleParser;
 import ca.knowtime.comm.parsers.gtfs.FeedInfoParser;
 import ca.knowtime.comm.parsers.gtfs.FrequencyParser;
 import ca.knowtime.comm.parsers.gtfs.RouteParser;
 import ca.knowtime.comm.parsers.gtfs.ShapeParser;
+import ca.knowtime.comm.parsers.gtfs.StopParser;
 import ca.knowtime.comm.parsers.gtfs.StopTimeParser;
-import ca.knowtime.comm.parsers.gtfs.StopsParser;
 import ca.knowtime.comm.parsers.gtfs.TransferParser;
 import ca.knowtime.comm.parsers.gtfs.TripParser;
 import com.android.volley.RequestQueue;
@@ -44,7 +44,7 @@ public class GtfsAccessImpl
 
     @Override
     public void dataSets( final Object tag, final Response<List<DataSetSummary>> res ) {
-        enqueueRequest( tag, new DataSetSummariesParser.ListFactory( this ), res );
+        enqueueRequest( tag, new DataSetSummaryParser.ListFactory( this ), res );
     }
 
 
@@ -52,7 +52,7 @@ public class GtfsAccessImpl
     public void dataSet( final Object tag,
                          final String dataSetId,
                          final Response<DataSetSummary> res ) {
-        enqueueRequest( tag, new DataSetSummariesParser.Factory( this ), res, dataSetId );
+        enqueueRequest( tag, new DataSetSummaryParser.Factory( this ), res, dataSetId );
     }
 
 
@@ -66,7 +66,7 @@ public class GtfsAccessImpl
 
     @Override
     public void stops( final Object tag, final String dataSetId, final Response<List<Stop>> res ) {
-        enqueueRequest( tag, new StopsParser.ListFactory( this ), res, dataSetId, "stops" );
+        enqueueRequest( tag, new StopParser.ListFactory( this ), res, dataSetId, "stops" );
     }
 
 
@@ -75,7 +75,7 @@ public class GtfsAccessImpl
                       final String dataSetId,
                       final String stopId,
                       final Response<Stop> res ) {
-        enqueueRequest( tag, new StopsParser.Factory( this ), res, dataSetId, "stops", stopId );
+        enqueueRequest( tag, new StopParser.Factory( this ), res, dataSetId, "stops", stopId );
     }
 
 

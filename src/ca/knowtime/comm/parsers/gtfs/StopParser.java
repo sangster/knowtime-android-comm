@@ -14,7 +14,7 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-public class StopsParser
+public class StopParser
         extends JsonParser<Stop, GtfsAccess>
 {
     public static class Factory
@@ -27,7 +27,7 @@ public class StopsParser
 
         @Override
         public JsonParser<Stop, GtfsAccess> parser( final JSONObject res ) {
-            return new StopsParser( mAccess, res );
+            return new StopParser( mAccess, res );
         }
     }
 
@@ -46,7 +46,7 @@ public class StopsParser
     }
 
 
-    public StopsParser( final GtfsAccess access, final JSONObject json ) {
+    public StopParser( final GtfsAccess access, final JSONObject json ) {
         super( "stop", access, json );
     }
 

@@ -10,7 +10,7 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-public class DataSetSummariesParser
+public class DataSetSummaryParser
         extends JsonParser<DataSetSummary, GtfsAccess>
 {
     public static class Factory
@@ -23,7 +23,7 @@ public class DataSetSummariesParser
 
         @Override
         public JsonParser<DataSetSummary, GtfsAccess> parser( final JSONObject res ) {
-            return new DataSetSummariesParser( mAccess, res );
+            return new DataSetSummaryParser( mAccess, res );
         }
     }
 
@@ -42,7 +42,7 @@ public class DataSetSummariesParser
     }
 
 
-    public DataSetSummariesParser( final GtfsAccess access, final JSONObject json ) {
+    public DataSetSummaryParser( final GtfsAccess access, final JSONObject json ) {
         super( "", access, json );
     }
 
