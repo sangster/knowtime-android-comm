@@ -1,16 +1,22 @@
 package ca.knowtime.comm;
 
+import android.content.Context;
 import android.net.Uri;
-import ca.knowtime.comm.cache.KnowTimeCache;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
 
 public class KnowTime
 {
-    public static KnowTimeAccess connect( final Uri baseUrl, final KnowTimeCache cache ) {
-        return new KnowTimeAccessImpl( baseUrl, cache );
+    public static KnowTimeAccess connect( final Context context, final Uri baseUrl ) {
+        final RequestQueue requestQueue = Volley.newRequestQueue( context );
+
+        return new KnowTimeAccessImpl( requestQueue,
+                                       baseUrl,
+                                       new GtfsAccessImpl( requestQueue, gtfsUrl( baseUrl ) ) );
     }
 
 
-    public static AsyncKnowTimeAccess async( final Uri baseUrl, final KnowTimeCache cache ) {
-        return new AsyncKnowTimeAccessImpl( connect( baseUrl, cache ) );
+    private static Uri gtfsUrl( final Uri baseUrl ) {
+        return baseUrl.buildUpon().appendPath( "gtfs" ).build();
     }
 }
