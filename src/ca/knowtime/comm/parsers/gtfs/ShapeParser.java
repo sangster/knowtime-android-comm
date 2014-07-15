@@ -51,10 +51,10 @@ public class ShapeParser
     public Shape get()
     throws ParseException {
         return new Shape( mAccess,
-                          unaliasIntern( "id" ).orNull(),
-                          unaliasFloat( "pt_lat" ).orNull(),
-                          unaliasFloat( "pt_lon" ).orNull(),
-                          unaliasInteger( "pt_sequence" ).orNull(),
+                          unaliasIntern( "id" ).get(),
+                          unaliasFloat( "pt_lat" ).get(),
+                          unaliasFloat( "pt_lon" ).get(),
+                          unaliasInteger( "pt_sequence" ).get(),
                           unaliasFloat( "dist_traveled" ) );
     }
 }

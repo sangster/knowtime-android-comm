@@ -51,11 +51,11 @@ public class FareAttributeParser
     public FareAttribute get()
     throws ParseException {
         return new FareAttribute( mAccess,
-                                  optIntern( "fare_id" ).orNull(),
-                                  opt( "price" ).orNull(),
-                                  opt( "currency_type" ).orNull(),
-                                  optInteger( "payment_method" ).orNull(),
-                                  optInteger( "transfers" ).orNull(),
+                                  optIntern( "fare_id" ).get(),
+                                  opt( "price" ).get(),
+                                  opt( "currency_type" ).get(),
+                                  optInteger( "payment_method" ).get(),
+                                  optInteger( "transfers" ).get(),
                                   optInteger( "transfer_duration" ) );
     }
 }

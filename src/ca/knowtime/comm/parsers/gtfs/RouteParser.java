@@ -50,9 +50,9 @@ public class RouteParser
 
     public Route get() {
         return new Route( mAccess,
-                          unaliasIntern( "id" ).orNull(),
-                          unaliasIntern( "short_name" ).orNull(),
-                          unaliasIntern( "long_name" ).orNull(),
+                          unaliasIntern( "id" ).get(),
+                          unaliasIntern( "short_name" ).get(),
+                          unaliasIntern( "long_name" ).get(),
                           unaliasRouteType(),
                           optIntern( "agency_id" ),
                           unalias( "desc" ),

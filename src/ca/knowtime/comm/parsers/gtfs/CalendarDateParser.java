@@ -51,8 +51,8 @@ public class CalendarDateParser
     public CalendarDate get()
     throws ParseException {
         return new CalendarDate( mAccess,
-                                 opt( "service_id" ).orNull(),
-                                 opt( "date" ).orNull(),
-                                 optInteger( "exception_type" ).orNull() );
+                                 opt( "service_id" ).get(),
+                                 opt( "date" ).get(),
+                                 optInteger( "exception_type" ).get() );
     }
 }

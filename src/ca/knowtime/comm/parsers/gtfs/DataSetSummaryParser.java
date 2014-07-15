@@ -51,10 +51,10 @@ public class DataSetSummaryParser
     public DataSetSummary get()
     throws ParseException {
         return new DataSetSummary( mAccess,
-                                   opt( "id" ).orNull(),
-                                   opt( "name" ).orNull(),
-                                   opt( "url" ).orNull(),
-                                   opt( "etag" ).orNull(),
-                                   opt( "created_at" ).orNull() );
+                                   opt( "id" ).get(),
+                                   opt( "name" ).get(),
+                                   opt( "url" ).get(),
+                                   opt( "etag" ).get(),
+                                   opt( "created_at" ).get() );
     }
 }

@@ -52,9 +52,9 @@ public class TripParser
     public Trip get()
     throws ParseException {
         return new Trip( mAccess,
-                         unaliasIntern( "id" ).orNull(),
-                         optIntern( "route_id" ).orNull(),
-                         optIntern( "service_id" ).orNull(),
+                         unaliasIntern( "id" ).get(),
+                         optIntern( "route_id" ).get(),
+                         optIntern( "service_id" ).get(),
                          unalias( "headsign" ),
                          unalias( "short_name" ),
                          optInteger( "direction_id" ),

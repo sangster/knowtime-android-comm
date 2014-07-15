@@ -51,10 +51,10 @@ public class FrequencyParser
     public Frequency get()
     throws ParseException {
         return new Frequency( mAccess,
-                              opt( "trip_id" ).orNull(),
-                              opt( "start_time" ).orNull(),
-                              opt( "end_time" ).orNull(),
-                              optInteger( "headway_secs" ).orNull(),
+                              opt( "trip_id" ).get(),
+                              opt( "start_time" ).get(),
+                              opt( "end_time" ).get(),
+                              optInteger( "headway_secs" ).get(),
                               optInteger( "exact_times" ) );
     }
 }

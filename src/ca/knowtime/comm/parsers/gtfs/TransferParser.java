@@ -51,9 +51,9 @@ public class TransferParser
     public Transfer get()
     throws ParseException {
         return new Transfer( mAccess,
-                             opt( "from_stop_id" ).orNull(),
-                             opt( "to_stop_id" ).orNull(),
-                             optInteger( "transfer_type" ).orNull(),
+                             opt( "from_stop_id" ).get(),
+                             opt( "to_stop_id" ).get(),
+                             optInteger( "transfer_type" ).get(),
                              optInteger( "min_transfer_time" ) );
     }
 }

@@ -53,16 +53,16 @@ public class CalendarParser
     public Calendar get()
     throws ParseException {
         return new Calendar( mAccess,
-                             opt( "service_id" ).orNull(),
-                             optBoolean( "monday" ).orNull(),
-                             optBoolean( "tuesday" ).orNull(),
-                             optBoolean( "wednesday" ).orNull(),
-                             optBoolean( "thursday" ).orNull(),
-                             optBoolean( "friday" ).orNull(),
-                             optBoolean( "saturday" ).orNull(),
-                             optBoolean( "sunday" ).orNull(),
-                             opt( "start_date" ).orNull(),
-                             opt( "end_date" ).orNull() );
+                             opt( "service_id" ).get(),
+                             optBoolean( "monday" ).get(),
+                             optBoolean( "tuesday" ).get(),
+                             optBoolean( "wednesday" ).get(),
+                             optBoolean( "thursday" ).get(),
+                             optBoolean( "friday" ).get(),
+                             optBoolean( "saturday" ).get(),
+                             optBoolean( "sunday" ).get(),
+                             opt( "start_date" ).get(),
+                             opt( "end_date" ).get() );
     }
 
 

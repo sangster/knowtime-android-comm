@@ -53,10 +53,10 @@ public class StopParser
 
     public Stop get() {
         return new Stop( mAccess,
-                         unalias( "id" ).orNull(),
-                         unalias( "name" ).orNull(),
-                         unaliasFloat( "lat" ).orNull(),
-                         unaliasFloat( "lon" ).orNull(),
+                         unalias( "id" ).get(),
+                         unalias( "name" ).get(),
+                         unaliasFloat( "lat" ).get(),
+                         unaliasFloat( "lon" ).get(),
                          unalias( "code" ),
                          unalias( "desc" ),
                          opt( "zone_id" ),

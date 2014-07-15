@@ -51,7 +51,7 @@ public class FareRuleParser
     public FareRule get()
     throws ParseException {
         return new FareRule( mAccess,
-                             opt( "fare_id" ).orNull(),
+                             opt( "fare_id" ).get(),
                              opt( "route_id" ),
                              opt( "origin_id" ),
                              opt( "destination_id" ),

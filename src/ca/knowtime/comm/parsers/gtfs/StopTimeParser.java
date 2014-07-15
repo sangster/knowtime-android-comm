@@ -52,11 +52,11 @@ public class StopTimeParser
     public StopTime get()
     throws ParseException {
         return new StopTime( mAccess,
-                             optIntern( "trip_id" ).orNull(),
-                             opt( "arrival_time" ).orNull(),
-                             opt( "departure_time" ).orNull(),
-                             optIntern( "stop_id" ).orNull(),
-                             optInteger( "stop_sequence" ).orNull(),
+                             optIntern( "trip_id" ).get(),
+                             opt( "arrival_time" ).get(),
+                             opt( "departure_time" ).get(),
+                             optIntern( "stop_id" ).get(),
+                             optInteger( "stop_sequence" ).get(),
                              opt( "stop_headsign" ),
                              optInteger( "pickup_type" ),
                              optInteger( "drop_off_type" ),

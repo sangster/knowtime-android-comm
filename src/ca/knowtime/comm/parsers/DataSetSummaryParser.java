@@ -49,9 +49,10 @@ public class DataSetSummaryParser
     public DataSetSummary get()
     throws ParseException {
         return new DataSetSummary( mAccess,
-                                   opt( "id" ).orNull(),
-                                   opt( "name" ).orNull(),
-                                   opt( "last_updated" ).orNull(),
+                                   opt( "id" ).get(),
+                                   opt( "name" ).get(),
+                                   opt( "title" ).get(),
+                                   opt( "last_updated" ).get(),
                                    location( "min" ),
                                    location( "max" ),
                                    optDate( "start" ),

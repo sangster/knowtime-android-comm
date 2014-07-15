@@ -51,9 +51,9 @@ public class FeedInfoParser
     public FeedInfo get()
     throws ParseException {
         return new FeedInfo( mAccess,
-                             unalias( "publisher_name" ).orNull(),
-                             unalias( "publisher_url" ).orNull(),
-                             unalias( "lang" ).orNull(),
+                             unalias( "publisher_name" ).get(),
+                             unalias( "publisher_url" ).get(),
+                             unalias( "lang" ).get(),
                              unalias( "start_date" ),
                              unalias( "end_date" ),
                              unalias( "version" ) );

@@ -49,9 +49,9 @@ public class AgencyParser
 
     public Agency get() {
         return new Agency( mAccess,
-                           unalias( "name" ).orNull(),
-                           unalias( "url" ).orNull(),
-                           unalias( "timezone" ).orNull(),
+                           unalias( "name" ).get(),
+                           unalias( "url" ).get(),
+                           unalias( "timezone" ).get(),
                            unaliasIntern( "id" ),
                            unalias( "lang" ),
                            unalias( "phone" ),
