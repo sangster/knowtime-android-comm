@@ -4,6 +4,7 @@ import ca.knowtime.comm.GtfsAccess;
 import ca.knowtime.comm.models.gtfs.enums.LocationType;
 import ca.knowtime.comm.models.gtfs.enums.WheelchairBoarding;
 import ca.knowtime.comm.models.gtfs.ids.StopId;
+import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 
@@ -110,5 +111,24 @@ public class Stop
 
     public Optional<WheelchairBoarding> getWheelchairBoarding() {
         return mWheelchairBoarding;
+    }
+
+
+    @Override
+    public String toString() {
+        return Objects.toStringHelper( this )
+                      .add( "Id", mId )
+                      .add( "Name", mName )
+                      .add( "Latitude", mLatitude )
+                      .add( "Longitude", mLongitude )
+                      .add( "Code", mCode )
+                      .add( "Description", mDescription )
+                      .add( "ZoneId", mZoneId )
+                      .add( "Url", mUrl )
+                      .add( "LocationType", mLocationType )
+                      .add( "ParentStation", mParentStation )
+                      .add( "Timezone", mTimezone )
+                      .add( "WheelchairBoarding", mWheelchairBoarding )
+                      .toString();
     }
 }

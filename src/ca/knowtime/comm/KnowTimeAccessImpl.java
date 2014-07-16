@@ -1,11 +1,18 @@
 package ca.knowtime.comm;
 
 import android.net.Uri;
+import android.util.Log;
 import ca.knowtime.comm.models.DataSetSummary;
+import ca.knowtime.comm.models.gtfs.Stop;
 import ca.knowtime.comm.parsers.DataSetSummaryParser;
+import ca.knowtime.comm.parsers.gtfs.StopParser;
 import com.android.volley.RequestQueue;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
+
+import static com.android.volley.Request.Method.POST;
 
 public class KnowTimeAccessImpl
         extends RestAccessImpl
@@ -29,7 +36,41 @@ public class KnowTimeAccessImpl
 
 
     @Override
-    public void dataSets( final Object tag, final Response<List<DataSetSummary>> res ) {
-        enqueueRequest( tag, new DataSetSummaryParser.ListFactory( this ), res, "data_sets" );
+    public void dataSets( final Object tag,
+                          final Response<List<DataSetSummary>> res ) {
+        enqueueRequest( tag,
+                        new DataSetSummaryParser.ListFactory( this ),
+                        res,
+                        "data_sets" );
+    }
+
+
+    @Override
+    public void stopsInBounds( final Object tag,
+                               final String dataSetId,
+                               final float lat1,
+                               final float lon1,
+                               final float lat2,
+                               final float lon2,
+                               final Response<List<Stop>> res ) {
+        final JSONObject body = new JSONObject();
+        try {
+            body.put( "lat1", lat1 );
+            body.put( "lon1", lon1 );
+            body.put( "lat2", lat2 );
+            body.put( "lon2", lon2 );
+        } catch( final JSONException e ) {
+            Log.e( "JON", "Error creating JSON object", e );
+        }
+
+        enqueueRequest( tag,
+                        objectRequest( POST,
+                                       body,
+                                       new StopParser.ListFactory( gtfs() ),
+                                       res,
+                                       "data_sets",
+                                       dataSetId,
+                                       "stops",
+                                       "within_bounds" ) );
     }
 }
