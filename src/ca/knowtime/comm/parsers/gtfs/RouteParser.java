@@ -1,7 +1,6 @@
 package ca.knowtime.comm.parsers.gtfs;
 
 
-import ca.knowtime.comm.GtfsAccess;
 import ca.knowtime.comm.models.gtfs.Route;
 import ca.knowtime.comm.models.gtfs.enums.RouteType;
 import ca.knowtime.comm.parsers.JsonParser;
@@ -12,45 +11,34 @@ import org.json.JSONObject;
 import java.util.List;
 
 public class RouteParser
-        extends JsonParser<Route, GtfsAccess>
+        extends JsonParser<Route>
 {
     public static class Factory
-            extends ParserFactory<Route, GtfsAccess>
+            implements ParserFactory<Route>
     {
-        public Factory( final GtfsAccess access ) {
-            super( access );
-        }
-
-
         @Override
-        public JsonParser<Route, GtfsAccess> parser( final JSONObject res ) {
-            return new RouteParser( mAccess, res );
+        public JsonParser<Route> parser( final JSONObject res ) {
+            return new RouteParser( res );
         }
     }
 
     public static class ListFactory
-            extends ParserFactory<List<Route>, GtfsAccess>
+            implements ParserFactory<List<Route>>
     {
-        public ListFactory( final GtfsAccess access ) {
-            super( access );
-        }
-
-
         @Override
-        public JsonParser<List<Route>, GtfsAccess> parser( final JSONObject res ) {
-            return new ListParser<>( "routes", new Factory( mAccess ), mAccess, res );
+        public JsonParser<List<Route>> parser( final JSONObject res ) {
+            return new ListParser<>( "routes", new Factory(), res );
         }
     }
 
 
-    public RouteParser( final GtfsAccess access, final JSONObject json ) {
-        super( "agency", access, json );
+    public RouteParser( final JSONObject json ) {
+        super( "route", json );
     }
 
 
     public Route get() {
-        return new Route( mAccess,
-                          unaliasIntern( "id" ).get(),
+        return new Route( unaliasIntern( "id" ).get(),
                           unaliasIntern( "short_name" ).get(),
                           unaliasIntern( "long_name" ).get(),
                           unaliasRouteType(),

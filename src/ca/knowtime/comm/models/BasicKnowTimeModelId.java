@@ -1,15 +1,12 @@
 package ca.knowtime.comm.models;
 
-import ca.knowtime.comm.KnowTimeAccess;
-
 public class BasicKnowTimeModelId
         extends KnowTimeModel
 {
     protected final String mId;
 
 
-    public BasicKnowTimeModelId( final KnowTimeAccess access, final String id ) {
-        super( access );
+    public BasicKnowTimeModelId( final String id ) {
         mId = id;
     }
 

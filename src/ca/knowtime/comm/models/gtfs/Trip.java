@@ -1,8 +1,8 @@
 package ca.knowtime.comm.models.gtfs;
 
 
-import ca.knowtime.comm.GtfsAccess;
 import ca.knowtime.comm.models.gtfs.ids.TripId;
+import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 
@@ -20,8 +20,7 @@ public class Trip
     private final Optional<Integer> mBikesAllowed;
 
 
-    public Trip( final GtfsAccess access,
-                 final String id,
+    public Trip( final String id,
                  final String routeId,
                  final String serviceId,
                  final Optional<String> headsign,
@@ -31,7 +30,7 @@ public class Trip
                  final Optional<String> shapeId,
                  final Optional<Integer> wheelchairAccessible,
                  final Optional<Integer> bikesAllowed ) {
-        super( access, id );
+        super( id );
         mRouteId = Preconditions.checkNotNull( routeId );
         mServiceId = Preconditions.checkNotNull( serviceId );
         mHeadsign = Preconditions.checkNotNull( headsign );
@@ -86,5 +85,22 @@ public class Trip
 
     public Optional<Integer> getBikesAllowed() {
         return mBikesAllowed;
+    }
+
+
+    @Override
+    public String toString() {
+        return Objects.toStringHelper( this )
+                      .add( "Id", mId )
+                      .add( "RouteId", mRouteId )
+                      .add( "ServiceId", mServiceId )
+                      .add( "Headsign", mHeadsign )
+                      .add( "ShortName", mShortName )
+                      .add( "DirectionId", mDirectionId )
+                      .add( "BlockId", mBlockId )
+                      .add( "ShapeId", mShapeId )
+                      .add( "WheelchairAccessible", mWheelchairAccessible )
+                      .add( "BikesAllowed", mBikesAllowed )
+                      .toString();
     }
 }

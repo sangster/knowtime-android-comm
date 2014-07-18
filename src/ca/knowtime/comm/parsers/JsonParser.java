@@ -1,6 +1,5 @@
 package ca.knowtime.comm.parsers;
 
-import ca.knowtime.comm.RestAccess;
 import ca.knowtime.comm.exceptions.ParseException;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
@@ -10,16 +9,14 @@ import org.json.JSONObject;
  * @param <T>
  *         The type of object being deserialized
  */
-public abstract class JsonParser<T, A extends RestAccess>
+public abstract class JsonParser<T>
 {
     protected final String mPrefix;
-    protected final A mAccess;
     protected final JSONObject mJson;
 
 
-    protected JsonParser( final String prefix, final A access, final JSONObject json ) {
+    protected JsonParser( final String prefix, final JSONObject json ) {
         mPrefix = Preconditions.checkNotNull( prefix );
-        mAccess = Preconditions.checkNotNull( access );
         mJson = Preconditions.checkNotNull( json );
     }
 
@@ -39,7 +36,8 @@ public abstract class JsonParser<T, A extends RestAccess>
     }
 
 
-    private Optional<String> unaliasIntern( final String key, final boolean intern ) {
+    private Optional<String> unaliasIntern( final String key,
+                                            final boolean intern ) {
         final String str;
         if( mJson.has( key ) ) {
             str = mJson.optString( key );
@@ -68,7 +66,8 @@ public abstract class JsonParser<T, A extends RestAccess>
     }
 
 
-    private Optional<String> optIntern( final String key, final boolean intern ) {
+    private Optional<String> optIntern( final String key,
+                                        final boolean intern ) {
         if( mJson.has( key ) ) {
             final String str = mJson.optString( key );
             return Optional.of( intern ? str.intern() : str );

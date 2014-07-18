@@ -1,7 +1,7 @@
 package ca.knowtime.comm.models.gtfs;
 
 
-import ca.knowtime.comm.GtfsAccess;
+import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 
@@ -17,15 +17,13 @@ public class Agency
     private final Optional<String> mFareUrl;
 
 
-    public Agency( final GtfsAccess access,
-                   final String name,
+    public Agency( final String name,
                    final String url,
                    final String timezone,
                    final Optional<String> id,
                    final Optional<String> lang,
                    final Optional<String> phone,
                    final Optional<String> fareUrl ) {
-        super( access );
         mName = Preconditions.checkNotNull( name );
         mUrl = Preconditions.checkNotNull( url );
         mTimezone = Preconditions.checkNotNull( timezone );
@@ -68,5 +66,19 @@ public class Agency
 
     public Optional<String> getFareUrl() {
         return mFareUrl;
+    }
+
+
+    @Override
+    public String toString() {
+        return Objects.toStringHelper( this )
+                      .add( "Name", mName )
+                      .add( "Url", mUrl )
+                      .add( "Timezone", mTimezone )
+                      .add( "Id", mId )
+                      .add( "Lang", mLang )
+                      .add( "Phone", mPhone )
+                      .add( "FareUrl", mFareUrl )
+                      .toString();
     }
 }

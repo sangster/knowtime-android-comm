@@ -1,7 +1,6 @@
 package ca.knowtime.comm.parsers.gtfs;
 
 
-import ca.knowtime.comm.GtfsAccess;
 import ca.knowtime.comm.exceptions.ParseException;
 import ca.knowtime.comm.models.gtfs.Calendar;
 import ca.knowtime.comm.parsers.JsonParser;
@@ -13,47 +12,36 @@ import org.json.JSONObject;
 import java.util.List;
 
 public class CalendarParser
-        extends JsonParser<Calendar, GtfsAccess>
+        extends JsonParser<Calendar>
 {
     public static class Factory
-            extends ParserFactory<Calendar, GtfsAccess>
+            implements ParserFactory<Calendar>
     {
-        public Factory( final GtfsAccess access ) {
-            super( access );
-        }
-
-
         @Override
-        public JsonParser<Calendar, GtfsAccess> parser( final JSONObject res ) {
-            return new CalendarParser( mAccess, res );
+        public JsonParser<Calendar> parser( final JSONObject res ) {
+            return new CalendarParser( res );
         }
     }
 
     public static class ListFactory
-            extends ParserFactory<List<Calendar>, GtfsAccess>
+            implements ParserFactory<List<Calendar>>
     {
-        public ListFactory( final GtfsAccess access ) {
-            super( access );
-        }
-
-
         @Override
-        public JsonParser<List<Calendar>, GtfsAccess> parser( final JSONObject res ) {
-            return new ListParser<>( "calendars", new Factory( mAccess ), mAccess, res );
+        public JsonParser<List<Calendar>> parser( final JSONObject res ) {
+            return new ListParser<>( "calendars", new Factory(), res );
         }
     }
 
 
-    public CalendarParser( final GtfsAccess access, final JSONObject json ) {
-        super( "", access, json );
+    public CalendarParser( final JSONObject json ) {
+        super( "", json );
     }
 
 
     @Override
     public Calendar get()
     throws ParseException {
-        return new Calendar( mAccess,
-                             opt( "service_id" ).get(),
+        return new Calendar( opt( "service_id" ).get(),
                              optBoolean( "monday" ).get(),
                              optBoolean( "tuesday" ).get(),
                              optBoolean( "wednesday" ).get(),

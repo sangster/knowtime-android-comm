@@ -1,6 +1,5 @@
 package ca.knowtime.comm.parsers.gtfs;
 
-import ca.knowtime.comm.GtfsAccess;
 import ca.knowtime.comm.exceptions.ParseException;
 import ca.knowtime.comm.models.gtfs.FareAttribute;
 import ca.knowtime.comm.parsers.JsonParser;
@@ -11,47 +10,36 @@ import org.json.JSONObject;
 import java.util.List;
 
 public class FareAttributeParser
-        extends JsonParser<FareAttribute, GtfsAccess>
+        extends JsonParser<FareAttribute>
 {
     public static class Factory
-            extends ParserFactory<FareAttribute, GtfsAccess>
+            implements ParserFactory<FareAttribute>
     {
-        public Factory( final GtfsAccess access ) {
-            super( access );
-        }
-
-
         @Override
-        public JsonParser<FareAttribute, GtfsAccess> parser( final JSONObject res ) {
-            return new FareAttributeParser( mAccess, res );
+        public JsonParser<FareAttribute> parser( final JSONObject res ) {
+            return new FareAttributeParser( res );
         }
     }
 
     public static class ListFactory
-            extends ParserFactory<List<FareAttribute>, GtfsAccess>
+            implements ParserFactory<List<FareAttribute>>
     {
-        public ListFactory( final GtfsAccess access ) {
-            super( access );
-        }
-
-
         @Override
-        public JsonParser<List<FareAttribute>, GtfsAccess> parser( final JSONObject res ) {
-            return new ListParser<>( "fare_attributes", new Factory( mAccess ), mAccess, res );
+        public JsonParser<List<FareAttribute>> parser( final JSONObject res ) {
+            return new ListParser<>( "fare_attributes", new Factory(), res );
         }
     }
 
 
-    public FareAttributeParser( final GtfsAccess access, final JSONObject json ) {
-        super( "", access, json );
+    public FareAttributeParser( final JSONObject json ) {
+        super( "", json );
     }
 
 
     @Override
     public FareAttribute get()
     throws ParseException {
-        return new FareAttribute( mAccess,
-                                  optIntern( "fare_id" ).get(),
+        return new FareAttribute( optIntern( "fare_id" ).get(),
                                   opt( "price" ).get(),
                                   opt( "currency_type" ).get(),
                                   optInteger( "payment_method" ).get(),

@@ -43,14 +43,12 @@ public class RestAccessImpl
     }
 
 
-    protected <T, A extends RestAccess> JsonRequest<JSONObject> objectRequest(
-            final int method,
-            final JSONObject body,
-            final ParserFactory<T, A> parser,
-            final Response<T> res,
-            final String... parts ) {
-        InnerObjectResponse<T, A> ior = new InnerObjectResponse<>( parser,
-                                                                   res );
+    protected <T> JsonRequest<JSONObject> objectRequest( final int method,
+                                                         final JSONObject body,
+                                                         final ParserFactory<T> parser,
+                                                         final Response<T> res,
+                                                         final String... parts ) {
+        InnerObjectResponse<T> ior = new InnerObjectResponse<>( parser, res );
 
         return new JsonObjectRequest( method,
                                       compileUri( parts ),
@@ -63,12 +61,12 @@ public class RestAccessImpl
     protected <T, A extends RestAccess> JsonRequest<JSONObject> objectRequest(
             final int method,
             final JSONObject body,
-            final ParserFactory<T, A> factory,
+            final ParserFactory<T> factory,
             final ErrorResponse res,
             final String... parts ) {
-        InnerObjectResponse<T, A> ior = new InnerObjectResponse<>( factory,
-                                                                   new VoidResponse<T>(
-                                                                           res ) );
+        InnerObjectResponse<T> ior = new InnerObjectResponse<>( factory,
+                                                                new VoidResponse<T>(
+                                                                        res ) );
 
         return new JsonObjectRequest( method,
                                       compileUri( parts ),
@@ -79,7 +77,7 @@ public class RestAccessImpl
 
 
     protected <T, A extends RestAccess> JsonRequest<JSONObject> objectGetRequest(
-            final ParserFactory<T, A> parser,
+            final ParserFactory<T> parser,
             final Response<T> res,
             final String... parts ) {
         return objectRequest( Request.Method.GET, null, parser, res, parts );
@@ -87,7 +85,7 @@ public class RestAccessImpl
 
 
     protected <T, A extends RestAccess> void enqueueRequest( final Object tag,
-                                                             final ParserFactory<T, A> parser,
+                                                             final ParserFactory<T> parser,
                                                              final Response<T> res,
                                                              final String... parts ) {
         enqueueRequest( tag,

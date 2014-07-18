@@ -1,6 +1,5 @@
 package ca.knowtime.comm.models.gtfs;
 
-import ca.knowtime.comm.GtfsAccess;
 import ca.knowtime.comm.models.gtfs.ids.FareId;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
@@ -15,14 +14,13 @@ public class FareAttribute
     private final Optional<Integer> mTransferDuration; // in seconds
 
 
-    public FareAttribute( final GtfsAccess access,
-                          final String id,
+    public FareAttribute( final String id,
                           final String price,
                           final String currencyType,
                           final int paymentMethod,
                           final int transfers,
                           final Optional<Integer> transferDuration ) {
-        super( access, id );
+        super( id );
         mPrice = Preconditions.checkNotNull( price );
         mCurrencyType = Preconditions.checkNotNull( currencyType );
         mPaymentMethod = Preconditions.checkNotNull( paymentMethod );

@@ -1,6 +1,5 @@
 package ca.knowtime.comm.models.gtfs;
 
-import ca.knowtime.comm.GtfsAccess;
 import ca.knowtime.comm.models.gtfs.enums.LocationType;
 import ca.knowtime.comm.models.gtfs.enums.WheelchairBoarding;
 import ca.knowtime.comm.models.gtfs.ids.StopId;
@@ -11,7 +10,6 @@ import com.google.common.base.Preconditions;
 public class Stop
         extends StopId
 {
-    private final String mId;
     private final String mName;
     private final float mLatitude;
     private final float mLongitude;
@@ -25,8 +23,7 @@ public class Stop
     private final Optional<WheelchairBoarding> mWheelchairBoarding;
 
 
-    public Stop( final GtfsAccess access,
-                 final String id,
+    public Stop( final String id,
                  final String name,
                  final float latitude,
                  final float longitude,
@@ -38,8 +35,7 @@ public class Stop
                  final Optional<Integer> parentStation,
                  final Optional<String> timezone,
                  final Optional<WheelchairBoarding> wheelchairBoarding ) {
-        super( access, id );
-        mId = Preconditions.checkNotNull( id );
+        super( id );
         mName = Preconditions.checkNotNull( name );
         mLatitude = Preconditions.checkNotNull( latitude );
         mLongitude = Preconditions.checkNotNull( longitude );
@@ -51,11 +47,6 @@ public class Stop
         mParentStation = Preconditions.checkNotNull( parentStation );
         mTimezone = Preconditions.checkNotNull( timezone );
         mWheelchairBoarding = Preconditions.checkNotNull( wheelchairBoarding );
-    }
-
-
-    public String getId() {
-        return mId;
     }
 
 
@@ -111,6 +102,26 @@ public class Stop
 
     public Optional<WheelchairBoarding> getWheelchairBoarding() {
         return mWheelchairBoarding;
+    }
+
+
+    @Override
+    public boolean equals( final Object o ) {
+        if( this == o ) {
+            return true;
+        }
+        if( !(o instanceof Stop) ) {
+            return false;
+        }
+
+        final Stop stop = (Stop) o;
+        return mId.equals( stop.mId );
+    }
+
+
+    @Override
+    public int hashCode() {
+        return mId.hashCode();
     }
 
 

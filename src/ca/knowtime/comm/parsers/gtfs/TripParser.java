@@ -1,7 +1,6 @@
 package ca.knowtime.comm.parsers.gtfs;
 
 
-import ca.knowtime.comm.GtfsAccess;
 import ca.knowtime.comm.exceptions.ParseException;
 import ca.knowtime.comm.models.gtfs.Trip;
 import ca.knowtime.comm.parsers.JsonParser;
@@ -12,47 +11,36 @@ import org.json.JSONObject;
 import java.util.List;
 
 public class TripParser
-        extends JsonParser<Trip, GtfsAccess>
+        extends JsonParser<Trip>
 {
     public static class Factory
-            extends ParserFactory<Trip, GtfsAccess>
+            implements ParserFactory<Trip>
     {
-        public Factory( final GtfsAccess access ) {
-            super( access );
-        }
-
-
         @Override
-        public JsonParser<Trip, GtfsAccess> parser( final JSONObject res ) {
-            return new TripParser( mAccess, res );
+        public JsonParser<Trip> parser( final JSONObject res ) {
+            return new TripParser( res );
         }
     }
 
     public static class ListFactory
-            extends ParserFactory<List<Trip>, GtfsAccess>
+            implements ParserFactory<List<Trip>>
     {
-        public ListFactory( final GtfsAccess access ) {
-            super( access );
-        }
-
-
         @Override
-        public JsonParser<List<Trip>, GtfsAccess> parser( final JSONObject res ) {
-            return new ListParser<>( "trips", new Factory( mAccess ), mAccess, res );
+        public JsonParser<List<Trip>> parser( final JSONObject res ) {
+            return new ListParser<>( "trips", new Factory(), res );
         }
     }
 
 
-    public TripParser( final GtfsAccess knowTime, final JSONObject json ) {
-        super( "trip", knowTime, json );
+    public TripParser( final JSONObject json ) {
+        super( "trip", json );
     }
 
 
     @Override
     public Trip get()
     throws ParseException {
-        return new Trip( mAccess,
-                         unaliasIntern( "id" ).get(),
+        return new Trip( unaliasIntern( "id" ).get(),
                          optIntern( "route_id" ).get(),
                          optIntern( "service_id" ).get(),
                          unalias( "headsign" ),

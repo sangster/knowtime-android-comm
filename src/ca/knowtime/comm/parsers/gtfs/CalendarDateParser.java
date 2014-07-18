@@ -1,6 +1,5 @@
 package ca.knowtime.comm.parsers.gtfs;
 
-import ca.knowtime.comm.GtfsAccess;
 import ca.knowtime.comm.exceptions.ParseException;
 import ca.knowtime.comm.models.gtfs.CalendarDate;
 import ca.knowtime.comm.parsers.JsonParser;
@@ -11,47 +10,36 @@ import org.json.JSONObject;
 import java.util.List;
 
 public class CalendarDateParser
-        extends JsonParser<CalendarDate, GtfsAccess>
+        extends JsonParser<CalendarDate>
 {
     public static class Factory
-            extends ParserFactory<CalendarDate, GtfsAccess>
+            implements ParserFactory<CalendarDate>
     {
-        public Factory( final GtfsAccess access ) {
-            super( access );
-        }
-
-
         @Override
-        public JsonParser<CalendarDate, GtfsAccess> parser( final JSONObject res ) {
-            return new CalendarDateParser( mAccess, res );
+        public JsonParser<CalendarDate> parser( final JSONObject res ) {
+            return new CalendarDateParser( res );
         }
     }
 
     public static class ListFactory
-            extends ParserFactory<List<CalendarDate>, GtfsAccess>
+            implements ParserFactory<List<CalendarDate>>
     {
-        public ListFactory( final GtfsAccess access ) {
-            super( access );
-        }
-
-
         @Override
-        public JsonParser<List<CalendarDate>, GtfsAccess> parser( final JSONObject res ) {
-            return new ListParser<>( "calendar_dates", new Factory( mAccess ), mAccess, res );
+        public JsonParser<List<CalendarDate>> parser( final JSONObject res ) {
+            return new ListParser<>( "calendar_dates", new Factory(), res );
         }
     }
 
 
-    public CalendarDateParser( final GtfsAccess access, final JSONObject json ) {
-        super( "", access, json );
+    public CalendarDateParser( final JSONObject json ) {
+        super( "", json );
     }
 
 
     @Override
     public CalendarDate get()
     throws ParseException {
-        return new CalendarDate( mAccess,
-                                 opt( "service_id" ).get(),
+        return new CalendarDate( opt( "service_id" ).get(),
                                  opt( "date" ).get(),
                                  optInteger( "exception_type" ).get() );
     }

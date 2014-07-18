@@ -37,14 +37,16 @@ public class GtfsAccessImpl
         extends RestAccessImpl
         implements GtfsAccess
 {
-    public GtfsAccessImpl( final RequestQueue requestQueue, final Uri baseUrl ) {
+    public GtfsAccessImpl( final RequestQueue requestQueue,
+                           final Uri baseUrl ) {
         super( requestQueue, baseUrl );
     }
 
 
     @Override
-    public void dataSets( final Object tag, final Response<List<DataSetSummary>> res ) {
-        enqueueRequest( tag, new DataSetSummaryParser.ListFactory( this ), res );
+    public void dataSets( final Object tag,
+                          final Response<List<DataSetSummary>> res ) {
+        enqueueRequest( tag, new DataSetSummaryParser.ListFactory(), res );
     }
 
 
@@ -52,7 +54,10 @@ public class GtfsAccessImpl
     public void dataSet( final Object tag,
                          final String dataSetId,
                          final Response<DataSetSummary> res ) {
-        enqueueRequest( tag, new DataSetSummaryParser.Factory( this ), res, dataSetId );
+        enqueueRequest( tag,
+                        new DataSetSummaryParser.Factory(),
+                        res,
+                        dataSetId );
     }
 
 
@@ -60,13 +65,23 @@ public class GtfsAccessImpl
     public void agencies( final Object tag,
                           final String dataSetId,
                           final Response<List<Agency>> res ) {
-        enqueueRequest( tag, new AgencyParser.ListFactory( this ), res, dataSetId, "agencies" );
+        enqueueRequest( tag,
+                        new AgencyParser.ListFactory(),
+                        res,
+                        dataSetId,
+                        "agencies" );
     }
 
 
     @Override
-    public void stops( final Object tag, final String dataSetId, final Response<List<Stop>> res ) {
-        enqueueRequest( tag, new StopParser.ListFactory( this ), res, dataSetId, "stops" );
+    public void stops( final Object tag,
+                       final String dataSetId,
+                       final Response<List<Stop>> res ) {
+        enqueueRequest( tag,
+                        new StopParser.ListFactory(),
+                        res,
+                        dataSetId,
+                        "stops" );
     }
 
 
@@ -75,7 +90,12 @@ public class GtfsAccessImpl
                       final String dataSetId,
                       final String stopId,
                       final Response<Stop> res ) {
-        enqueueRequest( tag, new StopParser.Factory( this ), res, dataSetId, "stops", stopId );
+        enqueueRequest( tag,
+                        new StopParser.Factory(),
+                        res,
+                        dataSetId,
+                        "stops",
+                        stopId );
     }
 
 
@@ -83,7 +103,11 @@ public class GtfsAccessImpl
     public void routes( final Object tag,
                         final String dataSetId,
                         final Response<List<Route>> res ) {
-        enqueueRequest( tag, new RouteParser.ListFactory( this ), res, dataSetId, "routes" );
+        enqueueRequest( tag,
+                        new RouteParser.ListFactory(),
+                        res,
+                        dataSetId,
+                        "routes" );
     }
 
 
@@ -92,13 +116,24 @@ public class GtfsAccessImpl
                        final String dataSetId,
                        final String routeId,
                        final Response<Route> res ) {
-        enqueueRequest( tag, new RouteParser.Factory( this ), res, dataSetId, "routes", routeId );
+        enqueueRequest( tag,
+                        new RouteParser.Factory(),
+                        res,
+                        dataSetId,
+                        "routes",
+                        routeId );
     }
 
 
     @Override
-    public void trips( final Object tag, final String dataSetId, final Response<List<Trip>> res ) {
-        enqueueRequest( tag, new TripParser.ListFactory( this ), res, dataSetId, "trips" );
+    public void trips( final Object tag,
+                       final String dataSetId,
+                       final Response<List<Trip>> res ) {
+        enqueueRequest( tag,
+                        new TripParser.ListFactory(),
+                        res,
+                        dataSetId,
+                        "trips" );
     }
 
 
@@ -107,7 +142,12 @@ public class GtfsAccessImpl
                       final String dataSetId,
                       final String tripId,
                       final Response<Trip> res ) {
-        enqueueRequest( tag, new TripParser.Factory( this ), res, dataSetId, "trips", tripId );
+        enqueueRequest( tag,
+                        new TripParser.Factory(),
+                        res,
+                        dataSetId,
+                        "trips",
+                        tripId );
     }
 
 
@@ -115,7 +155,11 @@ public class GtfsAccessImpl
     public void stopTimes( final Object tag,
                            final String dataSetId,
                            final Response<List<StopTime>> res ) {
-        enqueueRequest( tag, new StopTimeParser.ListFactory( this ), res, dataSetId, "stop_times" );
+        enqueueRequest( tag,
+                        new StopTimeParser.ListFactory(),
+                        res,
+                        dataSetId,
+                        "stop_times" );
     }
 
 
@@ -123,7 +167,11 @@ public class GtfsAccessImpl
     public void calendars( final Object tag,
                            final String dataSetId,
                            final Response<List<Calendar>> res ) {
-        enqueueRequest( tag, new CalendarParser.ListFactory( this ), res, dataSetId, "calendars" );
+        enqueueRequest( tag,
+                        new CalendarParser.ListFactory(),
+                        res,
+                        dataSetId,
+                        "calendars" );
     }
 
 
@@ -133,7 +181,7 @@ public class GtfsAccessImpl
                           final String calendarId,
                           final Response<Calendar> res ) {
         enqueueRequest( tag,
-                        new CalendarParser.Factory( this ),
+                        new CalendarParser.Factory(),
                         res,
                         dataSetId,
                         "calendars",
@@ -146,7 +194,7 @@ public class GtfsAccessImpl
                                final String dataSetId,
                                final Response<List<CalendarDate>> res ) {
         enqueueRequest( tag,
-                        new CalendarDateParser.ListFactory( this ),
+                        new CalendarDateParser.ListFactory(),
                         res,
                         dataSetId,
                         "calendar_dates" );
@@ -159,7 +207,7 @@ public class GtfsAccessImpl
                               final String calendarId,
                               final Response<CalendarDate> res ) {
         enqueueRequest( tag,
-                        new CalendarDateParser.Factory( this ),
+                        new CalendarDateParser.Factory(),
                         res,
                         dataSetId,
                         "calendar_dates",
@@ -172,7 +220,7 @@ public class GtfsAccessImpl
                                 final String dataSetId,
                                 final Response<List<FareAttribute>> res ) {
         enqueueRequest( tag,
-                        new FareAttributeParser.ListFactory( this ),
+                        new FareAttributeParser.ListFactory(),
                         res,
                         dataSetId,
                         "fare_attributes" );
@@ -185,7 +233,7 @@ public class GtfsAccessImpl
                                final String fareId,
                                final Response<FareAttribute> res ) {
         enqueueRequest( tag,
-                        new FareAttributeParser.Factory( this ),
+                        new FareAttributeParser.Factory(),
                         res,
                         dataSetId,
                         "fare_attributes",
@@ -197,7 +245,11 @@ public class GtfsAccessImpl
     public void fareRules( final Object tag,
                            final String dataSetId,
                            final Response<List<FareRule>> res ) {
-        enqueueRequest( tag, new FareRuleParser.ListFactory( this ), res, dataSetId, "fare_rules" );
+        enqueueRequest( tag,
+                        new FareRuleParser.ListFactory(),
+                        res,
+                        dataSetId,
+                        "fare_rules" );
     }
 
 
@@ -207,7 +259,7 @@ public class GtfsAccessImpl
                           final String fareId,
                           final Response<FareRule> res ) {
         enqueueRequest( tag,
-                        new FareRuleParser.Factory( this ),
+                        new FareRuleParser.Factory(),
                         res,
                         dataSetId,
                         "fare_rules",
@@ -219,7 +271,11 @@ public class GtfsAccessImpl
     public void shapes( final Object tag,
                         final String dataSetId,
                         final Response<List<Shape>> res ) {
-        enqueueRequest( tag, new ShapeParser.ListFactory( this ), res, dataSetId, "shapes" );
+        enqueueRequest( tag,
+                        new ShapeParser.ListFactory(),
+                        res,
+                        dataSetId,
+                        "shapes" );
     }
 
 
@@ -228,7 +284,12 @@ public class GtfsAccessImpl
                        final String dataSetId,
                        final String shapeId,
                        final Response<Shape> res ) {
-        enqueueRequest( tag, new ShapeParser.Factory( this ), res, dataSetId, "shapes", shapeId );
+        enqueueRequest( tag,
+                        new ShapeParser.Factory(),
+                        res,
+                        dataSetId,
+                        "shapes",
+                        shapeId );
     }
 
 
@@ -237,7 +298,7 @@ public class GtfsAccessImpl
                              final String dataSetId,
                              final Response<List<Frequency>> res ) {
         enqueueRequest( tag,
-                        new FrequencyParser.ListFactory( this ),
+                        new FrequencyParser.ListFactory(),
                         res,
                         dataSetId,
                         "frequencies" );
@@ -250,7 +311,7 @@ public class GtfsAccessImpl
                            final String tripId,
                            final Response<Frequency> res ) {
         enqueueRequest( tag,
-                        new FrequencyParser.Factory( this ),
+                        new FrequencyParser.Factory(),
                         res,
                         dataSetId,
                         "frequencies",
@@ -262,7 +323,11 @@ public class GtfsAccessImpl
     public void transfers( final Object tag,
                            final String dataSetId,
                            final Response<List<Transfer>> res ) {
-        enqueueRequest( tag, new TransferParser.ListFactory( this ), res, dataSetId, "transfers" );
+        enqueueRequest( tag,
+                        new TransferParser.ListFactory(),
+                        res,
+                        dataSetId,
+                        "transfers" );
     }
 
 
@@ -270,6 +335,10 @@ public class GtfsAccessImpl
     public void feedInfos( final Object tag,
                            final String dataSetId,
                            final Response<List<FeedInfo>> res ) {
-        enqueueRequest( tag, new FeedInfoParser.ListFactory( this ), res, dataSetId, "feed_infos" );
+        enqueueRequest( tag,
+                        new FeedInfoParser.ListFactory(),
+                        res,
+                        dataSetId,
+                        "feed_infos" );
     }
 }

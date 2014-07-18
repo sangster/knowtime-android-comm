@@ -1,6 +1,5 @@
 package ca.knowtime.comm.models.gtfs;
 
-import ca.knowtime.comm.GtfsAccess;
 import ca.knowtime.comm.models.gtfs.ids.ShapeId;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
@@ -14,13 +13,12 @@ public class Shape
     private final Optional<Float> mDistanceTraveled;
 
 
-    public Shape( final GtfsAccess access,
-                  final String id,
+    public Shape( final String id,
                   final float pointLatitude,
                   final float pointLongitude,
                   final int pointSequence,
                   final Optional<Float> distanceTraveled ) {
-        super( access, id );
+        super( id );
         mPointLatitude = Preconditions.checkNotNull( pointLatitude );
         mPointLongitude = Preconditions.checkNotNull( pointLongitude );
         mPointSequence = Preconditions.checkNotNull( pointSequence );

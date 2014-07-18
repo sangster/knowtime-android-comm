@@ -1,7 +1,6 @@
 package ca.knowtime.comm.models.gtfs;
 
 
-import ca.knowtime.comm.GtfsAccess;
 import ca.knowtime.comm.models.gtfs.ids.DataSetId;
 import com.google.common.base.Preconditions;
 
@@ -14,13 +13,12 @@ public class DataSetSummary
     private final String mCreatedAt;
 
 
-    public DataSetSummary( final GtfsAccess access,
-                           final String id,
+    public DataSetSummary( final String id,
                            final String name,
                            final String url,
                            final String etag,
                            final String createdAt ) {
-        super( access, id );
+        super( id );
         mName = Preconditions.checkNotNull( name );
         mUrl = Preconditions.checkNotNull( url );
         mEtag = Preconditions.checkNotNull( etag );

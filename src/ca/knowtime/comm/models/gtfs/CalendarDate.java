@@ -1,6 +1,5 @@
 package ca.knowtime.comm.models.gtfs;
 
-import ca.knowtime.comm.GtfsAccess;
 import ca.knowtime.comm.models.gtfs.ids.CalendarId;
 
 public class CalendarDate
@@ -10,11 +9,10 @@ public class CalendarDate
     private final int mExceptionType;
 
 
-    public CalendarDate( final GtfsAccess access,
-                         final String id,
+    public CalendarDate( final String id,
                          final String date,
                          final int exceptionType ) {
-        super( access, id );
+        super( id );
         mDate = date;
         mExceptionType = exceptionType;
     }

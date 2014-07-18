@@ -1,7 +1,6 @@
 package ca.knowtime.comm.models.gtfs;
 
 
-import ca.knowtime.comm.GtfsAccess;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 
@@ -19,8 +18,7 @@ public class StopTime
     private final Optional<Float> mShapeDistTraveled;
 
 
-    public StopTime( final GtfsAccess access,
-                     final String tripId,
+    public StopTime( final String tripId,
                      final String arrivalTime,
                      final String departureTime,
                      final String stopId,
@@ -29,7 +27,6 @@ public class StopTime
                      final Optional<Integer> pickupType,
                      final Optional<Integer> dropOffType,
                      final Optional<Float> shapeDistTraveled ) {
-        super( access );
         mTripId = Preconditions.checkNotNull( tripId );
         mArrivalTime = Preconditions.checkNotNull( arrivalTime );
         mDepartureTime = Preconditions.checkNotNull( departureTime );

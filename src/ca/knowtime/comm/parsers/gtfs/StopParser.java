@@ -1,7 +1,6 @@
 package ca.knowtime.comm.parsers.gtfs;
 
 
-import ca.knowtime.comm.GtfsAccess;
 import ca.knowtime.comm.models.gtfs.Stop;
 import ca.knowtime.comm.models.gtfs.enums.LocationType;
 import ca.knowtime.comm.models.gtfs.enums.WheelchairBoarding;
@@ -15,45 +14,34 @@ import org.json.JSONObject;
 import java.util.List;
 
 public class StopParser
-        extends JsonParser<Stop, GtfsAccess>
+        extends JsonParser<Stop>
 {
     public static class Factory
-            extends ParserFactory<Stop, GtfsAccess>
+            implements ParserFactory<Stop>
     {
-        public Factory( final GtfsAccess access ) {
-            super( access );
-        }
-
-
         @Override
-        public JsonParser<Stop, GtfsAccess> parser( final JSONObject res ) {
-            return new StopParser( mAccess, res );
+        public JsonParser<Stop> parser( final JSONObject res ) {
+            return new StopParser( res );
         }
     }
 
     public static class ListFactory
-            extends ParserFactory<List<Stop>, GtfsAccess>
+            implements ParserFactory<List<Stop>>
     {
-        public ListFactory( final GtfsAccess access ) {
-            super( access );
-        }
-
-
         @Override
-        public JsonParser<List<Stop>, GtfsAccess> parser( final JSONObject res ) {
-            return new ListParser<>( "stops", new Factory( mAccess ), mAccess, res );
+        public JsonParser<List<Stop>> parser( final JSONObject res ) {
+            return new ListParser<>( "stops", new Factory(), res );
         }
     }
 
 
-    public StopParser( final GtfsAccess access, final JSONObject json ) {
-        super( "stop", access, json );
+    public StopParser( final JSONObject json ) {
+        super( "stop", json );
     }
 
 
     public Stop get() {
-        return new Stop( mAccess,
-                         unalias( "id" ).get(),
+        return new Stop( unalias( "id" ).get(),
                          unalias( "name" ).get(),
                          unaliasFloat( "lat" ).get(),
                          unaliasFloat( "lon" ).get(),

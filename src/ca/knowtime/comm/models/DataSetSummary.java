@@ -1,6 +1,5 @@
 package ca.knowtime.comm.models;
 
-import ca.knowtime.comm.KnowTimeAccess;
 import ca.knowtime.comm.models.ids.DataSetId;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
@@ -40,8 +39,7 @@ public class DataSetSummary
     private final Optional<String> mEndDate;
 
 
-    public DataSetSummary( final KnowTimeAccess knowTime,
-                           final String id,
+    public DataSetSummary( final String id,
                            final String name,
                            final String title,
                            final String lastUpdated,
@@ -49,7 +47,7 @@ public class DataSetSummary
                            final Location southEastCorner,
                            final Optional<String> startDate,
                            final Optional<String> endDate ) {
-        super( knowTime, id );
+        super( id );
         mName = Preconditions.checkNotNull( name );
         mTitle = Preconditions.checkNotNull( title );
         mLastUpdated = Preconditions.checkNotNull( lastUpdated );

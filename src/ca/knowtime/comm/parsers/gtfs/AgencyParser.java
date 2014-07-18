@@ -1,7 +1,6 @@
 package ca.knowtime.comm.parsers.gtfs;
 
 
-import ca.knowtime.comm.GtfsAccess;
 import ca.knowtime.comm.models.gtfs.Agency;
 import ca.knowtime.comm.parsers.JsonParser;
 import ca.knowtime.comm.parsers.ListParser;
@@ -11,45 +10,34 @@ import org.json.JSONObject;
 import java.util.List;
 
 public class AgencyParser
-        extends JsonParser<Agency, GtfsAccess>
+        extends JsonParser<Agency>
 {
     public static class Factory
-            extends ParserFactory<Agency, GtfsAccess>
+            implements ParserFactory<Agency>
     {
-        protected Factory( final GtfsAccess access ) {
-            super( access );
-        }
-
-
         @Override
-        public JsonParser<Agency, GtfsAccess> parser( final JSONObject res ) {
-            return new AgencyParser( mAccess, res );
+        public JsonParser<Agency> parser( final JSONObject res ) {
+            return new AgencyParser( res );
         }
     }
 
     public static class ListFactory
-            extends ParserFactory<List<Agency>, GtfsAccess>
+            implements ParserFactory<List<Agency>>
     {
-        public ListFactory( final GtfsAccess access ) {
-            super( access );
-        }
-
-
         @Override
-        public JsonParser<List<Agency>, GtfsAccess> parser( final JSONObject res ) {
-            return new ListParser<>( "agencies", new Factory( mAccess ), mAccess, res );
+        public JsonParser<List<Agency>> parser( final JSONObject res ) {
+            return new ListParser<>( "agencies", new Factory(), res );
         }
     }
 
 
-    public AgencyParser( final GtfsAccess access, final JSONObject json ) {
-        super( "agency", access, json );
+    public AgencyParser( final JSONObject json ) {
+        super( "agency", json );
     }
 
 
     public Agency get() {
-        return new Agency( mAccess,
-                           unalias( "name" ).get(),
+        return new Agency( unalias( "name" ).get(),
                            unalias( "url" ).get(),
                            unalias( "timezone" ).get(),
                            unaliasIntern( "id" ),

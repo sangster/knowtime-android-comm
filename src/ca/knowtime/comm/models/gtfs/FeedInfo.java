@@ -1,6 +1,5 @@
 package ca.knowtime.comm.models.gtfs;
 
-import ca.knowtime.comm.GtfsAccess;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 
@@ -15,14 +14,12 @@ public class FeedInfo
     private final Optional<String> mVersion;
 
 
-    public FeedInfo( final GtfsAccess access,
-                     final String publisherName,
+    public FeedInfo( final String publisherName,
                      final String publisherUrl,
                      final String language,
                      final Optional<String> startDate,
                      final Optional<String> endDate,
                      final Optional<String> version ) {
-        super( access );
         mPublisherName = Preconditions.checkNotNull( publisherName );
         mPublisherUrl = Preconditions.checkNotNull( publisherUrl );
         mLanguage = Preconditions.checkNotNull( language );

@@ -1,6 +1,5 @@
 package ca.knowtime.comm.parsers.gtfs;
 
-import ca.knowtime.comm.GtfsAccess;
 import ca.knowtime.comm.exceptions.ParseException;
 import ca.knowtime.comm.models.gtfs.DataSetSummary;
 import ca.knowtime.comm.parsers.JsonParser;
@@ -11,47 +10,36 @@ import org.json.JSONObject;
 import java.util.List;
 
 public class DataSetSummaryParser
-        extends JsonParser<DataSetSummary, GtfsAccess>
+        extends JsonParser<DataSetSummary>
 {
     public static class Factory
-            extends ParserFactory<DataSetSummary, GtfsAccess>
+            implements ParserFactory<DataSetSummary>
     {
-        public Factory( final GtfsAccess access ) {
-            super( access );
-        }
-
-
         @Override
-        public JsonParser<DataSetSummary, GtfsAccess> parser( final JSONObject res ) {
-            return new DataSetSummaryParser( mAccess, res );
+        public JsonParser<DataSetSummary> parser( final JSONObject res ) {
+            return new DataSetSummaryParser( res );
         }
     }
 
     public static class ListFactory
-            extends ParserFactory<List<DataSetSummary>, GtfsAccess>
+            implements ParserFactory<List<DataSetSummary>>
     {
-        public ListFactory( final GtfsAccess access ) {
-            super( access );
-        }
-
-
         @Override
-        public JsonParser<List<DataSetSummary>, GtfsAccess> parser( final JSONObject res ) {
-            return new ListParser<>( "data_sets", new Factory( mAccess ), mAccess, res );
+        public JsonParser<List<DataSetSummary>> parser( final JSONObject res ) {
+            return new ListParser<>( "data_sets", new Factory(), res );
         }
     }
 
 
-    public DataSetSummaryParser( final GtfsAccess access, final JSONObject json ) {
-        super( "", access, json );
+    public DataSetSummaryParser( final JSONObject json ) {
+        super( "", json );
     }
 
 
     @Override
     public DataSetSummary get()
     throws ParseException {
-        return new DataSetSummary( mAccess,
-                                   opt( "id" ).get(),
+        return new DataSetSummary( opt( "id" ).get(),
                                    opt( "name" ).get(),
                                    opt( "url" ).get(),
                                    opt( "etag" ).get(),

@@ -1,6 +1,5 @@
 package ca.knowtime.comm.parsers.gtfs;
 
-import ca.knowtime.comm.GtfsAccess;
 import ca.knowtime.comm.exceptions.ParseException;
 import ca.knowtime.comm.models.gtfs.FareRule;
 import ca.knowtime.comm.parsers.JsonParser;
@@ -11,47 +10,37 @@ import org.json.JSONObject;
 import java.util.List;
 
 public class FareRuleParser
-        extends JsonParser<FareRule, GtfsAccess>
+        extends JsonParser<FareRule>
 {
     public static class Factory
-            extends ParserFactory<FareRule, GtfsAccess>
+            implements ParserFactory<FareRule>
     {
-        public Factory( final GtfsAccess access ) {
-            super( access );
-        }
-
-
         @Override
-        public JsonParser<FareRule, GtfsAccess> parser( final JSONObject res ) {
-            return new FareRuleParser( mAccess, res );
+        public JsonParser<FareRule> parser( final JSONObject res ) {
+            return new FareRuleParser( res );
         }
     }
+
 
     public static class ListFactory
-            extends ParserFactory<List<FareRule>, GtfsAccess>
+            implements ParserFactory<List<FareRule>>
     {
-        public ListFactory( final GtfsAccess access ) {
-            super( access );
-        }
-
-
         @Override
-        public JsonParser<List<FareRule>, GtfsAccess> parser( final JSONObject res ) {
-            return new ListParser<>( "fare_rules", new Factory( mAccess ), mAccess, res );
+        public JsonParser<List<FareRule>> parser( final JSONObject res ) {
+            return new ListParser<>( "fare_rules", new Factory(), res );
         }
     }
 
 
-    protected FareRuleParser( final GtfsAccess access, final JSONObject json ) {
-        super( "", access, json );
+    protected FareRuleParser( final JSONObject json ) {
+        super( "", json );
     }
 
 
     @Override
     public FareRule get()
     throws ParseException {
-        return new FareRule( mAccess,
-                             opt( "fare_id" ).get(),
+        return new FareRule( opt( "fare_id" ).get(),
                              opt( "route_id" ),
                              opt( "origin_id" ),
                              opt( "destination_id" ),

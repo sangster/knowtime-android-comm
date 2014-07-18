@@ -3,8 +3,10 @@ package ca.knowtime.comm;
 import android.net.Uri;
 import android.util.Log;
 import ca.knowtime.comm.models.DataSetSummary;
+import ca.knowtime.comm.models.gtfs.Route;
 import ca.knowtime.comm.models.gtfs.Stop;
 import ca.knowtime.comm.parsers.DataSetSummaryParser;
+import ca.knowtime.comm.parsers.gtfs.RouteParser;
 import ca.knowtime.comm.parsers.gtfs.StopParser;
 import com.android.volley.RequestQueue;
 import org.json.JSONException;
@@ -39,7 +41,7 @@ public class KnowTimeAccessImpl
     public void dataSets( final Object tag,
                           final Response<List<DataSetSummary>> res ) {
         enqueueRequest( tag,
-                        new DataSetSummaryParser.ListFactory( this ),
+                        new DataSetSummaryParser.ListFactory(),
                         res,
                         "data_sets" );
     }
@@ -66,11 +68,27 @@ public class KnowTimeAccessImpl
         enqueueRequest( tag,
                         objectRequest( POST,
                                        body,
-                                       new StopParser.ListFactory( gtfs() ),
+                                       new StopParser.ListFactory(),
                                        res,
-                                       "data_sets",
                                        dataSetId,
                                        "stops",
                                        "within_bounds" ) );
+    }
+
+
+    @Override
+    public void routesForStop( final Object tag,
+                               final String dataSetId,
+                               final String date,
+                               final String stopId,
+                               final Response<List<Route>> res ) {
+        enqueueRequest( tag,
+                        new RouteParser.ListFactory(),
+                        res,
+                        dataSetId,
+                        "routes",
+                        date,
+                        "stop",
+                        stopId );
     }
 }

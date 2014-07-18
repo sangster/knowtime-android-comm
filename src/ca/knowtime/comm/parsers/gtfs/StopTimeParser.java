@@ -1,6 +1,5 @@
 package ca.knowtime.comm.parsers.gtfs;
 
-import ca.knowtime.comm.GtfsAccess;
 import ca.knowtime.comm.exceptions.ParseException;
 import ca.knowtime.comm.models.gtfs.StopTime;
 import ca.knowtime.comm.parsers.JsonParser;
@@ -12,47 +11,36 @@ import java.util.List;
 
 
 public class StopTimeParser
-        extends JsonParser<StopTime, GtfsAccess>
+        extends JsonParser<StopTime>
 {
     public static class Factory
-            extends ParserFactory<StopTime, GtfsAccess>
+            implements ParserFactory<StopTime>
     {
-        protected Factory( final GtfsAccess access ) {
-            super( access );
-        }
-
-
         @Override
-        public JsonParser<StopTime, GtfsAccess> parser( final JSONObject res ) {
-            return new StopTimeParser( mAccess, res );
+        public JsonParser<StopTime> parser( final JSONObject res ) {
+            return new StopTimeParser( res );
         }
     }
 
     public static class ListFactory
-            extends ParserFactory<List<StopTime>, GtfsAccess>
+            implements ParserFactory<List<StopTime>>
     {
-        public ListFactory( final GtfsAccess access ) {
-            super( access );
-        }
-
-
         @Override
-        public JsonParser<List<StopTime>, GtfsAccess> parser( final JSONObject res ) {
-            return new ListParser<>( "stop_times", new Factory( mAccess ), mAccess, res );
+        public JsonParser<List<StopTime>> parser( final JSONObject res ) {
+            return new ListParser<>( "stop_times", new Factory(), res );
         }
     }
 
 
-    public StopTimeParser( final GtfsAccess access, final JSONObject json ) {
-        super( "", access, json );
+    public StopTimeParser( final JSONObject json ) {
+        super( "", json );
     }
 
 
     @Override
     public StopTime get()
     throws ParseException {
-        return new StopTime( mAccess,
-                             optIntern( "trip_id" ).get(),
+        return new StopTime( optIntern( "trip_id" ).get(),
                              opt( "arrival_time" ).get(),
                              opt( "departure_time" ).get(),
                              optIntern( "stop_id" ).get(),

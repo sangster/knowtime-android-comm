@@ -1,6 +1,7 @@
 package ca.knowtime.comm;
 
 import ca.knowtime.comm.models.DataSetSummary;
+import ca.knowtime.comm.models.gtfs.Route;
 import ca.knowtime.comm.models.gtfs.Stop;
 
 import java.util.List;
@@ -20,5 +21,11 @@ public interface KnowTimeAccess
                         float lat2,
                         float lon2,
                         Response<List<Stop>> res );
+
+    void routesForStop( Object tag,
+                        String dataSetId,
+                        String date,
+                        String stopId,
+                        Response<List<Route>> response );
 }
 

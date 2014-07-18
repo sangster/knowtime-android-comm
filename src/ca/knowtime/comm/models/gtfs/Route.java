@@ -1,9 +1,9 @@
 package ca.knowtime.comm.models.gtfs;
 
 
-import ca.knowtime.comm.GtfsAccess;
 import ca.knowtime.comm.models.gtfs.enums.RouteType;
 import ca.knowtime.comm.models.gtfs.ids.RouteId;
+import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 
@@ -20,8 +20,7 @@ public class Route
     private final Optional<String> mTextColor;
 
 
-    public Route( final GtfsAccess access,
-                  final String id,
+    public Route( final String id,
                   final String shortName,
                   final String longName,
                   final RouteType type,
@@ -30,7 +29,7 @@ public class Route
                   final Optional<String> url,
                   final Optional<String> color,
                   final Optional<String> textColor ) {
-        super( access, id );
+        super( id );
         mShortName = Preconditions.checkNotNull( shortName );
         mLongName = Preconditions.checkNotNull( longName );
         mType = Preconditions.checkNotNull( type );
@@ -79,5 +78,20 @@ public class Route
 
     public Optional<String> getTextColor() {
         return mTextColor;
+    }
+
+
+    @Override
+    public String toString() {
+        return Objects.toStringHelper( this )
+                      .add( "ShortName", mShortName )
+                      .add( "LongName", mLongName )
+                      .add( "Type", mType )
+                      .add( "AgencyId", mAgencyId )
+                      .add( "Description", mDescription )
+                      .add( "Url", mUrl )
+                      .add( "Color", mColor )
+                      .add( "TextColor", mTextColor )
+                      .toString();
     }
 }

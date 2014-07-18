@@ -1,8 +1,8 @@
 package ca.knowtime.comm.models.gtfs;
 
 
-import ca.knowtime.comm.GtfsAccess;
 import ca.knowtime.comm.models.gtfs.ids.CalendarId;
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
 public class Calendar
@@ -19,8 +19,7 @@ public class Calendar
     private final String mEndDate;
 
 
-    public Calendar( final GtfsAccess access,
-                     final String id,
+    public Calendar( final String id,
                      final boolean monday,
                      final boolean tuesday,
                      final boolean wednesday,
@@ -30,7 +29,7 @@ public class Calendar
                      final boolean sunday,
                      final String startDate,
                      final String endDate ) {
-        super( access, id );
+        super( id );
         mMonday = Preconditions.checkNotNull( monday );
         mTuesday = Preconditions.checkNotNull( tuesday );
         mWednesday = Preconditions.checkNotNull( wednesday );
@@ -85,5 +84,22 @@ public class Calendar
 
     public String getEndDate() {
         return mEndDate;
+    }
+
+
+    @Override
+    public String toString() {
+        return Objects.toStringHelper( this )
+                      .add( "ServiceId", mId )
+                      .add( "Monday", mMonday )
+                      .add( "Tuesday", mTuesday )
+                      .add( "Wednesday", mWednesday )
+                      .add( "Thursday", mThursday )
+                      .add( "Friday", mFriday )
+                      .add( "Saturday", mSaturday )
+                      .add( "Sunday", mSunday )
+                      .add( "StartDate", mStartDate )
+                      .add( "EndDate", mEndDate )
+                      .toString();
     }
 }

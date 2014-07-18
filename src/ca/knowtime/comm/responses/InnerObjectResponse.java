@@ -1,7 +1,6 @@
 package ca.knowtime.comm.responses;
 
 import android.util.Log;
-import ca.knowtime.comm.RestAccess;
 import ca.knowtime.comm.parsers.ParserFactory;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -10,15 +9,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
-public class InnerObjectResponse<Type, Access extends RestAccess>
+public class InnerObjectResponse<Type>
         implements Response.Listener<JSONObject>, Response.ErrorListener
 {
     private static final String TAG = "InnerObjectResponse";
-    private final ParserFactory<Type, Access> mFactory;
+    private final ParserFactory<Type> mFactory;
     private final ca.knowtime.comm.Response<Type> mResponse;
 
 
-    public InnerObjectResponse( final ParserFactory<Type, Access> factory,
+    public InnerObjectResponse( final ParserFactory<Type> factory,
                                 final ca.knowtime.comm.Response<Type> response ) {
         mFactory = Preconditions.checkNotNull( factory );
         mResponse = Preconditions.checkNotNull( response );

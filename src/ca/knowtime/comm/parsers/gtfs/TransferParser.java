@@ -1,6 +1,5 @@
 package ca.knowtime.comm.parsers.gtfs;
 
-import ca.knowtime.comm.GtfsAccess;
 import ca.knowtime.comm.exceptions.ParseException;
 import ca.knowtime.comm.models.gtfs.Transfer;
 import ca.knowtime.comm.parsers.JsonParser;
@@ -11,47 +10,37 @@ import org.json.JSONObject;
 import java.util.List;
 
 public class TransferParser
-        extends JsonParser<Transfer, GtfsAccess>
+        extends JsonParser<Transfer>
 {
     public static class Factory
-            extends ParserFactory<Transfer, GtfsAccess>
+            implements ParserFactory<Transfer>
     {
-        protected Factory( final GtfsAccess access ) {
-            super( access );
-        }
-
-
         @Override
-        public JsonParser<Transfer, GtfsAccess> parser( final JSONObject res ) {
-            return new TransferParser( mAccess, res );
+        public JsonParser<Transfer> parser( final JSONObject res ) {
+            return new TransferParser( res );
         }
     }
+
 
     public static class ListFactory
-            extends ParserFactory<List<Transfer>, GtfsAccess>
+            implements ParserFactory<List<Transfer>>
     {
-        public ListFactory( final GtfsAccess access ) {
-            super( access );
-        }
-
-
         @Override
-        public JsonParser<List<Transfer>, GtfsAccess> parser( final JSONObject res ) {
-            return new ListParser<>( "transfers", new Factory( mAccess ), mAccess, res );
+        public JsonParser<List<Transfer>> parser( final JSONObject res ) {
+            return new ListParser<>( "transfers", new Factory(), res );
         }
     }
 
 
-    public TransferParser( final GtfsAccess access, final JSONObject json ) {
-        super( "", access, json );
+    public TransferParser( final JSONObject json ) {
+        super( "", json );
     }
 
 
     @Override
     public Transfer get()
     throws ParseException {
-        return new Transfer( mAccess,
-                             opt( "from_stop_id" ).get(),
+        return new Transfer( opt( "from_stop_id" ).get(),
                              opt( "to_stop_id" ).get(),
                              optInteger( "transfer_type" ).get(),
                              optInteger( "min_transfer_time" ) );

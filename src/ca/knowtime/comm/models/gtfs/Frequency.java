@@ -1,6 +1,5 @@
 package ca.knowtime.comm.models.gtfs;
 
-import ca.knowtime.comm.GtfsAccess;
 import ca.knowtime.comm.models.gtfs.ids.TripId;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
@@ -14,13 +13,12 @@ public class Frequency
     private final Optional<Integer> mExactTimes;
 
 
-    public Frequency( final GtfsAccess access,
-                      final String id,
+    public Frequency( final String id,
                       final String startTime,
                       final String endTime,
                       final int headwaySeconds,
                       final Optional<Integer> exactTimes ) {
-        super( access, id );
+        super( id );
         mStartTime = Preconditions.checkNotNull( startTime );
         mEndTime = Preconditions.checkNotNull( endTime );
         mHeadwaySeconds = Preconditions.checkNotNull( headwaySeconds );

@@ -1,6 +1,5 @@
 package ca.knowtime.comm.models.gtfs;
 
-import ca.knowtime.comm.GtfsAccess;
 import ca.knowtime.comm.models.gtfs.ids.FareId;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
@@ -14,13 +13,12 @@ public class FareRule
     private final Optional<String> mContainsId;
 
 
-    public FareRule( final GtfsAccess access,
-                     final String id,
+    public FareRule( final String id,
                      final Optional<String> routeId,
                      final Optional<String> originId,
                      final Optional<String> destinationId,
                      final Optional<String> containsId ) {
-        super( access, id );
+        super( id );
         mRouteId = Preconditions.checkNotNull( routeId );
         mOriginId = Preconditions.checkNotNull( originId );
         mDestinationId = Preconditions.checkNotNull( destinationId );
