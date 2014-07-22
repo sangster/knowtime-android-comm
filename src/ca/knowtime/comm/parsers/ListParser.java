@@ -19,7 +19,7 @@ public class ListParser<T>
     public ListParser( final String collectionKey,
                        final ParserFactory<T> elementFactory,
                        final JSONObject json ) {
-        super( "", json );
+        super( json );
         mCollectionKey = collectionKey;
         mElementFactory = elementFactory;
     }

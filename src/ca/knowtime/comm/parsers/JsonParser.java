@@ -11,12 +11,10 @@ import org.json.JSONObject;
  */
 public abstract class JsonParser<T>
 {
-    protected final String mPrefix;
     protected final JSONObject mJson;
 
 
-    protected JsonParser( final String prefix, final JSONObject json ) {
-        mPrefix = Preconditions.checkNotNull( prefix );
+    protected JsonParser( final JSONObject json ) {
         mJson = Preconditions.checkNotNull( json );
     }
 
@@ -24,36 +22,6 @@ public abstract class JsonParser<T>
     /** @return the requestComplete of deserializing the given JSON string */
     public abstract T get()
             throws ParseException;
-
-
-    protected Optional<String> unalias( final String key ) {
-        return unaliasIntern( key, false );
-    }
-
-
-    protected Optional<String> unaliasIntern( final String key ) {
-        return unaliasIntern( key, true );
-    }
-
-
-    private Optional<String> unaliasIntern( final String key,
-                                            final boolean intern ) {
-        final String str;
-        if( mJson.has( key ) ) {
-            str = mJson.optString( key );
-        } else {
-            str = mJson.optString( alias( key ), null );
-        }
-        if( str == null ) {
-            return Optional.absent();
-        }
-        return Optional.of( intern ? str.intern() : str );
-    }
-
-
-    private String alias( final String key ) {
-        return mPrefix + '_' + key;
-    }
 
 
     protected Optional<String> opt( final String key ) {
@@ -76,21 +44,11 @@ public abstract class JsonParser<T>
     }
 
 
-    protected Optional<Float> unaliasFloat( final String key ) {
-        return optFloat( key ).or( optFloat( alias( key ) ) );
-    }
-
-
     protected Optional<Float> optFloat( final String key ) {
         if( mJson.has( key ) ) {
             return Optional.of( (float) mJson.optDouble( key ) );
         }
         return Optional.absent();
-    }
-
-
-    protected Optional<Integer> unaliasInteger( final String key ) {
-        return optInteger( key ).or( optInteger( alias( key ) ) );
     }
 
 

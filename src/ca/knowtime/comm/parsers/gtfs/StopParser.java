@@ -36,22 +36,22 @@ public class StopParser
 
 
     public StopParser( final JSONObject json ) {
-        super( "stop", json );
+        super( json );
     }
 
 
     public Stop get() {
-        return new Stop( unalias( "id" ).get(),
-                         unalias( "name" ).get(),
-                         unaliasFloat( "lat" ).get(),
-                         unaliasFloat( "lon" ).get(),
-                         unalias( "code" ),
-                         unalias( "desc" ),
+        return new Stop( opt( "stop_id" ).get(),
+                         opt( "stop_name" ).get(),
+                         optFloat( "stop_lat" ).get(),
+                         optFloat( "stop_lon" ).get(),
+                         opt( "stop_code" ),
+                         opt( "stop_desc" ),
                          opt( "zone_id" ),
-                         unalias( "url" ),
+                         opt( "stop_url" ),
                          optLocationType(),
                          optInteger( "parent_station" ),
-                         unalias( "timezone" ),
+                         opt( "stop_timezone" ),
                          optWheelchairBoarding() );
     }
 

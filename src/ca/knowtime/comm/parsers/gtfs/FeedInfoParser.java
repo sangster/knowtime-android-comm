@@ -32,18 +32,18 @@ public class FeedInfoParser
 
 
     public FeedInfoParser( final JSONObject json ) {
-        super( "feed", json );
+        super( json );
     }
 
 
     @Override
     public FeedInfo get()
     throws ParseException {
-        return new FeedInfo( unalias( "publisher_name" ).get(),
-                             unalias( "publisher_url" ).get(),
-                             unalias( "lang" ).get(),
-                             unalias( "start_date" ),
-                             unalias( "end_date" ),
-                             unalias( "version" ) );
+        return new FeedInfo( opt( "feed_publisher_name" ).get(),
+                             opt( "feed_publisher_url" ).get(),
+                             opt( "feed_lang" ).get(),
+                             opt( "feed_start_date" ),
+                             opt( "feed_end_date" ),
+                             opt( "feed_version" ) );
     }
 }

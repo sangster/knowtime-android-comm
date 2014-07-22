@@ -32,7 +32,7 @@ public class DataSetSummaryParser
 
 
     public DataSetSummaryParser( final JSONObject json ) {
-        super( "", json );
+        super( json );
     }
 
 

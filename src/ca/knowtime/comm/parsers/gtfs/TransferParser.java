@@ -33,7 +33,7 @@ public class TransferParser
 
 
     public TransferParser( final JSONObject json ) {
-        super( "", json );
+        super( json );
     }
 
 

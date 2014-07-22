@@ -32,7 +32,7 @@ public class FrequencyParser
 
 
     protected FrequencyParser( final JSONObject json ) {
-        super( "", json );
+        super( json );
     }
 
 

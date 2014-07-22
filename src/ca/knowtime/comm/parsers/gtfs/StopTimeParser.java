@@ -33,7 +33,7 @@ public class StopTimeParser
 
 
     public StopTimeParser( final JSONObject json ) {
-        super( "", json );
+        super( json );
     }
 
 

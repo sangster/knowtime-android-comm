@@ -33,17 +33,17 @@ public class FareRuleParser
 
 
     protected FareRuleParser( final JSONObject json ) {
-        super( "", json );
+        super( json );
     }
 
 
     @Override
     public FareRule get()
     throws ParseException {
-        return new FareRule( opt( "fare_id" ).get(),
-                             opt( "route_id" ),
-                             opt( "origin_id" ),
-                             opt( "destination_id" ),
-                             opt( "contains_id" ) );
+        return new FareRule( optIntern( "fare_id" ).get(),
+                             optIntern( "route_id" ),
+                             optIntern( "origin_id" ),
+                             optIntern( "destination_id" ),
+                             optIntern( "contains_id" ) );
     }
 }

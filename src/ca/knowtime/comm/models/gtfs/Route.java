@@ -10,49 +10,49 @@ import com.google.common.base.Preconditions;
 public class Route
         extends RouteId
 {
-    private final String mShortName;
-    private final String mLongName;
-    private final RouteType mType;
+    private final String mRouteShortName;
+    private final String mRouteLongName;
+    private final RouteType mRouteType;
     private final Optional<String> mAgencyId;
-    private final Optional<String> mDescription;
-    private final Optional<String> mUrl;
-    private final Optional<String> mColor;
-    private final Optional<String> mTextColor;
+    private final Optional<String> mRouteDesc;
+    private final Optional<String> mRouteUrl;
+    private final Optional<String> mRouteColor;
+    private final Optional<String> mRouteTextColor;
 
 
-    public Route( final String id,
-                  final String shortName,
-                  final String longName,
-                  final RouteType type,
+    public Route( final String routeId,
+                  final String routeShortName,
+                  final String routeLongName,
+                  final RouteType routeType,
                   final Optional<String> agencyId,
-                  final Optional<String> description,
-                  final Optional<String> url,
-                  final Optional<String> color,
-                  final Optional<String> textColor ) {
-        super( id );
-        mShortName = Preconditions.checkNotNull( shortName );
-        mLongName = Preconditions.checkNotNull( longName );
-        mType = Preconditions.checkNotNull( type );
+                  final Optional<String> routeDesc,
+                  final Optional<String> routeUrl,
+                  final Optional<String> routeColor,
+                  final Optional<String> routeTextColor ) {
+        super( routeId );
+        mRouteShortName = Preconditions.checkNotNull( routeShortName );
+        mRouteLongName = Preconditions.checkNotNull( routeLongName );
+        mRouteType = Preconditions.checkNotNull( routeType );
         mAgencyId = Preconditions.checkNotNull( agencyId );
-        mDescription = Preconditions.checkNotNull( description );
-        mUrl = Preconditions.checkNotNull( url );
-        mColor = Preconditions.checkNotNull( color );
-        mTextColor = Preconditions.checkNotNull( textColor );
+        mRouteDesc = Preconditions.checkNotNull( routeDesc );
+        mRouteUrl = Preconditions.checkNotNull( routeUrl );
+        mRouteColor = Preconditions.checkNotNull( routeColor );
+        mRouteTextColor = Preconditions.checkNotNull( routeTextColor );
     }
 
 
-    public String getShortName() {
-        return mShortName;
+    public String getRouteShortName() {
+        return mRouteShortName;
     }
 
 
-    public String getLongName() {
-        return mLongName;
+    public String getRouteLongName() {
+        return mRouteLongName;
     }
 
 
-    public RouteType getType() {
-        return mType;
+    public RouteType getRouteType() {
+        return mRouteType;
     }
 
 
@@ -61,37 +61,38 @@ public class Route
     }
 
 
-    public Optional<String> getDescription() {
-        return mDescription;
+    public Optional<String> getRouteDesc() {
+        return mRouteDesc;
     }
 
 
-    public Optional<String> getUrl() {
-        return mUrl;
+    public Optional<String> getRouteUrl() {
+        return mRouteUrl;
     }
 
 
-    public Optional<String> getColor() {
-        return mColor;
+    public Optional<String> getRouteColor() {
+        return mRouteColor;
     }
 
 
-    public Optional<String> getTextColor() {
-        return mTextColor;
+    public Optional<String> getRouteTextColor() {
+        return mRouteTextColor;
     }
 
 
     @Override
     public String toString() {
         return Objects.toStringHelper( this )
-                      .add( "ShortName", mShortName )
-                      .add( "LongName", mLongName )
-                      .add( "Type", mType )
+                      .add( "RouteId", mId )
+                      .add( "RouteShortName", mRouteShortName )
+                      .add( "RouteLongName", mRouteLongName )
+                      .add( "RouteType", mRouteType )
                       .add( "AgencyId", mAgencyId )
-                      .add( "Description", mDescription )
-                      .add( "Url", mUrl )
-                      .add( "Color", mColor )
-                      .add( "TextColor", mTextColor )
+                      .add( "RouteDesc", mRouteDesc )
+                      .add( "RouteUrl", mRouteUrl )
+                      .add( "RouteColor", mRouteColor )
+                      .add( "RouteTextColor", mRouteTextColor )
                       .toString();
     }
 }
