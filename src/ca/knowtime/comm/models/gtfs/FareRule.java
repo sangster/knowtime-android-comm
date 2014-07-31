@@ -1,6 +1,7 @@
 package ca.knowtime.comm.models.gtfs;
 
 import ca.knowtime.comm.models.gtfs.ids.FareId;
+import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 
@@ -13,12 +14,12 @@ public class FareRule
     private final Optional<String> mContainsId;
 
 
-    public FareRule( final String id,
+    public FareRule( final String fareId,
                      final Optional<String> routeId,
                      final Optional<String> originId,
                      final Optional<String> destinationId,
                      final Optional<String> containsId ) {
-        super( id );
+        super( fareId );
         mRouteId = Preconditions.checkNotNull( routeId );
         mOriginId = Preconditions.checkNotNull( originId );
         mDestinationId = Preconditions.checkNotNull( destinationId );
@@ -43,5 +44,17 @@ public class FareRule
 
     public Optional<String> getContainsId() {
         return mContainsId;
+    }
+
+
+    @Override
+    public String toString() {
+        return Objects.toStringHelper( this )
+                      .add( "FareId", mId )
+                      .add( "RouteId", mRouteId )
+                      .add( "OriginId", mOriginId )
+                      .add( "DestinationId", mDestinationId )
+                      .add( "ContainsId", mContainsId )
+                      .toString();
     }
 }

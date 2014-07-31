@@ -33,25 +33,25 @@ public class RouteParser
 
 
     public RouteParser( final JSONObject json ) {
-        super( "route", json );
+        super( json );
     }
 
 
     public Route get() {
-        return new Route( unaliasIntern( "id" ).get(),
-                          unaliasIntern( "short_name" ).get(),
-                          unaliasIntern( "long_name" ).get(),
-                          unaliasRouteType(),
-                          optIntern( "agency_id" ),
-                          unalias( "desc" ),
-                          unalias( "url" ),
-                          unalias( "color" ),
-                          unalias( "text_color" ) );
+        return new Route( optIntern( "route_id" ).get(),
+                          optIntern( "route_short_name" ).get(),
+                          optIntern( "route_long_name" ).get(),
+                          optRouteType(),
+                          optIntern( "route_agency_id" ),
+                          opt( "route_desc" ),
+                          opt( "route_url" ),
+                          opt( "route_color" ),
+                          opt( "route_text_color" ) );
     }
 
 
-    private RouteType unaliasRouteType() {
-        final Integer type = unaliasInteger( "type" ).get();
+    private RouteType optRouteType() {
+        final Integer type = optInteger( "route_type" ).get();
         switch( type ) {
             case 0:
                 return RouteType.tram;

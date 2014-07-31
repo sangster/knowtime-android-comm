@@ -7,41 +7,41 @@ import com.google.common.base.Preconditions;
 public class Shape
         extends ShapeId
 {
-    private final float mPointLatitude;
-    private final float mPointLongitude;
-    private final int mPointSequence;
-    private final Optional<Float> mDistanceTraveled;
+    private final float mShapePtLat;
+    private final float mShapePtLon;
+    private final int mShapePtSequence;
+    private final Optional<Float> mShapeDistTraveled;
 
 
-    public Shape( final String id,
-                  final float pointLatitude,
-                  final float pointLongitude,
-                  final int pointSequence,
-                  final Optional<Float> distanceTraveled ) {
-        super( id );
-        mPointLatitude = Preconditions.checkNotNull( pointLatitude );
-        mPointLongitude = Preconditions.checkNotNull( pointLongitude );
-        mPointSequence = Preconditions.checkNotNull( pointSequence );
-        mDistanceTraveled = Preconditions.checkNotNull( distanceTraveled );
+    public Shape( final String shapeId,
+                  final float shapePtLat,
+                  final float shapePtLon,
+                  final int shapePtSequence,
+                  final Optional<Float> shapeDistTraveled ) {
+        super( shapeId );
+        mShapePtLat = Preconditions.checkNotNull( shapePtLat );
+        mShapePtLon = Preconditions.checkNotNull( shapePtLon );
+        mShapePtSequence = Preconditions.checkNotNull( shapePtSequence );
+        mShapeDistTraveled = Preconditions.checkNotNull( shapeDistTraveled );
     }
 
 
-    public float getPointLatitude() {
-        return mPointLatitude;
+    public float getShapePtLat() {
+        return mShapePtLat;
     }
 
 
-    public float getPointLongitude() {
-        return mPointLongitude;
+    public float getShapePtLon() {
+        return mShapePtLon;
     }
 
 
-    public int getPointSequence() {
-        return mPointSequence;
+    public int getShapePtSequence() {
+        return mShapePtSequence;
     }
 
 
-    public Optional<Float> getDistanceTraveled() {
-        return mDistanceTraveled;
+    public Optional<Float> getShapeDistTraveled() {
+        return mShapeDistTraveled;
     }
 }

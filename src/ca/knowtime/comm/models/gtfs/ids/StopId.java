@@ -6,4 +6,9 @@ public class StopId
     public StopId( final String id ) {
         super( id );
     }
+
+
+    public String getStopId() {
+        return mId;
+    }
 }

@@ -6,4 +6,9 @@ public class ShapeId
     public ShapeId( final String id ) {
         super( id );
     }
+
+
+    public String getShapeId() {
+        return mId;
+    }
 }

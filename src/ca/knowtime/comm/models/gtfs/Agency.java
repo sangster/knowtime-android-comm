@@ -8,77 +8,77 @@ import com.google.common.base.Preconditions;
 public class Agency
         extends GtfsModel
 {
-    private final String mName;
-    private final String mUrl;
-    private final String mTimezone;
-    private final Optional<String> mId;
-    private final Optional<String> mLang;
-    private final Optional<String> mPhone;
-    private final Optional<String> mFareUrl;
+    private final String mAgencyName;
+    private final String mAgencyUrl;
+    private final String mAgencyTimezone;
+    private final Optional<String> mAgencyId;
+    private final Optional<String> mAgencyLang;
+    private final Optional<String> mAgencyPhone;
+    private final Optional<String> mAgencyFareUrl;
 
 
-    public Agency( final String name,
-                   final String url,
-                   final String timezone,
-                   final Optional<String> id,
-                   final Optional<String> lang,
-                   final Optional<String> phone,
-                   final Optional<String> fareUrl ) {
-        mName = Preconditions.checkNotNull( name );
-        mUrl = Preconditions.checkNotNull( url );
-        mTimezone = Preconditions.checkNotNull( timezone );
-        mId = Preconditions.checkNotNull( id );
-        mLang = Preconditions.checkNotNull( lang );
-        mPhone = Preconditions.checkNotNull( phone );
-        mFareUrl = Preconditions.checkNotNull( fareUrl );
+    public Agency( final String agencyName,
+                   final String agencyUrl,
+                   final String agencyTimezone,
+                   final Optional<String> agencyId,
+                   final Optional<String> agencyLang,
+                   final Optional<String> agencyPhone,
+                   final Optional<String> agencyFareUrl ) {
+        mAgencyName = Preconditions.checkNotNull( agencyName );
+        mAgencyUrl = Preconditions.checkNotNull( agencyUrl );
+        mAgencyTimezone = Preconditions.checkNotNull( agencyTimezone );
+        mAgencyId = Preconditions.checkNotNull( agencyId );
+        mAgencyLang = Preconditions.checkNotNull( agencyLang );
+        mAgencyPhone = Preconditions.checkNotNull( agencyPhone );
+        mAgencyFareUrl = Preconditions.checkNotNull( agencyFareUrl );
     }
 
 
-    public String getName() {
-        return mName;
+    public String getAgencyName() {
+        return mAgencyName;
     }
 
 
-    public String getUrl() {
-        return mUrl;
+    public String getAgencyUrl() {
+        return mAgencyUrl;
     }
 
 
-    public String getTimezone() {
-        return mTimezone;
+    public String getAgencyTimezone() {
+        return mAgencyTimezone;
     }
 
 
-    public Optional<String> getId() {
-        return mId;
+    public Optional<String> getAgencyId() {
+        return mAgencyId;
     }
 
 
-    public Optional<String> getLang() {
-        return mLang;
+    public Optional<String> getAgencyLang() {
+        return mAgencyLang;
     }
 
 
-    public Optional<String> getPhone() {
-        return mPhone;
+    public Optional<String> getAgencyPhone() {
+        return mAgencyPhone;
     }
 
 
-    public Optional<String> getFareUrl() {
-        return mFareUrl;
+    public Optional<String> getAgencyFareUrl() {
+        return mAgencyFareUrl;
     }
 
 
     @Override
     public String toString() {
         return Objects.toStringHelper( this )
-                      .add( "Name", mName )
-                      .add( "Url", mUrl )
-                      .add( "Timezone", mTimezone )
-                      .add( "Id", mId )
-                      .add( "Lang", mLang )
-                      .add( "Phone", mPhone )
-                      .add( "FareUrl", mFareUrl )
+                      .add( "AgencyName", mAgencyName )
+                      .add( "AgencyUrl", mAgencyUrl )
+                      .add( "AgencyTimezone", mAgencyTimezone )
+                      .add( "AgencyId", mAgencyId )
+                      .add( "AgencyLang", mAgencyLang )
+                      .add( "AgencyPhone", mAgencyPhone )
+                      .add( "AgencyFareUrl", mAgencyFareUrl )
                       .toString();
     }
 }

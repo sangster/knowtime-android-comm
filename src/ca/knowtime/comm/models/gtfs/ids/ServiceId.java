@@ -1,14 +1,15 @@
 package ca.knowtime.comm.models.gtfs.ids;
 
-public class FareId
+
+public class ServiceId
         extends BasicGtfsModelId
 {
-    public FareId( final String id ) {
+    public ServiceId( final String id ) {
         super( id );
     }
 
 
-    public String getFareId() {
+    public String getServiceId() {
         return mId;
     }
 }

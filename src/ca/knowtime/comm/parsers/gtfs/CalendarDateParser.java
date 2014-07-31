@@ -32,7 +32,7 @@ public class CalendarDateParser
 
 
     public CalendarDateParser( final JSONObject json ) {
-        super( "", json );
+        super( json );
     }
 
 

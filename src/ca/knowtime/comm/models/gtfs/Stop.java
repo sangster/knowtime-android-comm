@@ -10,68 +10,68 @@ import com.google.common.base.Preconditions;
 public class Stop
         extends StopId
 {
-    private final String mName;
-    private final float mLatitude;
-    private final float mLongitude;
-    private final Optional<String> mCode;
-    private final Optional<String> mDescription;
+    private final String mStopName;
+    private final float mStopLat;
+    private final float mStopLon;
+    private final Optional<String> mStopCode;
+    private final Optional<String> mStopDesc;
     private final Optional<String> mZoneId;
-    private final Optional<String> mUrl;
+    private final Optional<String> mStopUrl;
     private final Optional<LocationType> mLocationType;
     private final Optional<Integer> mParentStation;
-    private final Optional<String> mTimezone;
+    private final Optional<String> mStopTimezone;
     private final Optional<WheelchairBoarding> mWheelchairBoarding;
 
 
-    public Stop( final String id,
-                 final String name,
-                 final float latitude,
-                 final float longitude,
-                 final Optional<String> code,
-                 final Optional<String> description,
+    public Stop( final String stopId,
+                 final String stopName,
+                 final float stopLat,
+                 final float stopLon,
+                 final Optional<String> stopCode,
+                 final Optional<String> stopDesc,
                  final Optional<String> zoneId,
-                 final Optional<String> url,
+                 final Optional<String> stopUrl,
                  final Optional<LocationType> locationType,
                  final Optional<Integer> parentStation,
-                 final Optional<String> timezone,
+                 final Optional<String> stopTimezone,
                  final Optional<WheelchairBoarding> wheelchairBoarding ) {
-        super( id );
-        mName = Preconditions.checkNotNull( name );
-        mLatitude = Preconditions.checkNotNull( latitude );
-        mLongitude = Preconditions.checkNotNull( longitude );
-        mCode = Preconditions.checkNotNull( code );
-        mDescription = Preconditions.checkNotNull( description );
+        super( stopId );
+        mStopName = Preconditions.checkNotNull( stopName );
+        mStopLat = Preconditions.checkNotNull( stopLat );
+        mStopLon = Preconditions.checkNotNull( stopLon );
+        mStopCode = Preconditions.checkNotNull( stopCode );
+        mStopDesc = Preconditions.checkNotNull( stopDesc );
         mZoneId = Preconditions.checkNotNull( zoneId );
-        mUrl = Preconditions.checkNotNull( url );
+        mStopUrl = Preconditions.checkNotNull( stopUrl );
         mLocationType = Preconditions.checkNotNull( locationType );
         mParentStation = Preconditions.checkNotNull( parentStation );
-        mTimezone = Preconditions.checkNotNull( timezone );
+        mStopTimezone = Preconditions.checkNotNull( stopTimezone );
         mWheelchairBoarding = Preconditions.checkNotNull( wheelchairBoarding );
     }
 
 
-    public String getName() {
-        return mName;
+    public String getStopName() {
+        return mStopName;
     }
 
 
-    public float getLatitude() {
-        return mLatitude;
+    public float getStopLat() {
+        return mStopLat;
     }
 
 
-    public float getLongitude() {
-        return mLongitude;
+    public float getStopLon() {
+        return mStopLon;
     }
 
 
-    public Optional<String> getCode() {
-        return mCode;
+    public Optional<String> getStopCode() {
+        return mStopCode;
     }
 
 
-    public Optional<String> getDescription() {
-        return mDescription;
+    public Optional<String> getStopDesc() {
+        return mStopDesc;
     }
 
 
@@ -80,8 +80,8 @@ public class Stop
     }
 
 
-    public Optional<String> getUrl() {
-        return mUrl;
+    public Optional<String> getStopUrl() {
+        return mStopUrl;
     }
 
 
@@ -95,8 +95,8 @@ public class Stop
     }
 
 
-    public Optional<String> getTimezone() {
-        return mTimezone;
+    public Optional<String> getStopTimezone() {
+        return mStopTimezone;
     }
 
 
@@ -128,17 +128,17 @@ public class Stop
     @Override
     public String toString() {
         return Objects.toStringHelper( this )
-                      .add( "Id", mId )
-                      .add( "Name", mName )
-                      .add( "Latitude", mLatitude )
-                      .add( "Longitude", mLongitude )
-                      .add( "Code", mCode )
-                      .add( "Description", mDescription )
+                      .add( "StopId", mId )
+                      .add( "StopName", mStopName )
+                      .add( "StopLat", mStopLat )
+                      .add( "StopLon", mStopLon )
+                      .add( "StopCode", mStopCode )
+                      .add( "StopDesc", mStopDesc )
                       .add( "ZoneId", mZoneId )
-                      .add( "Url", mUrl )
+                      .add( "StopUrl", mStopUrl )
                       .add( "LocationType", mLocationType )
                       .add( "ParentStation", mParentStation )
-                      .add( "Timezone", mTimezone )
+                      .add( "StopTimezone", mStopTimezone )
                       .add( "WheelchairBoarding", mWheelchairBoarding )
                       .toString();
     }

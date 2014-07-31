@@ -32,17 +32,17 @@ public class ShapeParser
 
 
     protected ShapeParser( final JSONObject json ) {
-        super( "shape", json );
+        super( json );
     }
 
 
     @Override
     public Shape get()
     throws ParseException {
-        return new Shape( unaliasIntern( "id" ).get(),
-                          unaliasFloat( "pt_lat" ).get(),
-                          unaliasFloat( "pt_lon" ).get(),
-                          unaliasInteger( "pt_sequence" ).get(),
-                          unaliasFloat( "dist_traveled" ) );
+        return new Shape( optIntern( "shape_id" ).get(),
+                          optFloat( "shape_pt_lat" ).get(),
+                          optFloat( "shape_pt_lon" ).get(),
+                          optInteger( "shape_pt_sequence" ).get(),
+                          optFloat( "shape_dist_traveled" ) );
     }
 }

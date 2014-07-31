@@ -6,4 +6,9 @@ public class RouteId
     public RouteId( final String id ) {
         super( id );
     }
+
+
+    public String getRouteId() {
+        return mId;
+    }
 }

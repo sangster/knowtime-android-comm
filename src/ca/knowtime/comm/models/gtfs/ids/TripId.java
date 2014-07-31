@@ -7,4 +7,9 @@ public class TripId
     public TripId( final String id ) {
         super( id );
     }
+
+
+    public String getTripId() {
+        return mId;
+    }
 }

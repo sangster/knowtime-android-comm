@@ -32,17 +32,17 @@ public class AgencyParser
 
 
     public AgencyParser( final JSONObject json ) {
-        super( "agency", json );
+        super( json );
     }
 
 
     public Agency get() {
-        return new Agency( unalias( "name" ).get(),
-                           unalias( "url" ).get(),
-                           unalias( "timezone" ).get(),
-                           unaliasIntern( "id" ),
-                           unalias( "lang" ),
-                           unalias( "phone" ),
-                           unalias( "fare_url" ) );
+        return new Agency( opt( "agency_name" ).get(),
+                           opt( "agency_url" ).get(),
+                           opt( "agency_timezone" ).get(),
+                           optIntern( "agency_id" ),
+                           opt( "agency_lang" ),
+                           opt( "agency_phone" ),
+                           opt( "agency_fare_url" ) );
     }
 }

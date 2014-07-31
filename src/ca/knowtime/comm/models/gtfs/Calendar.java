@@ -1,12 +1,12 @@
 package ca.knowtime.comm.models.gtfs;
 
 
-import ca.knowtime.comm.models.gtfs.ids.CalendarId;
+import ca.knowtime.comm.models.gtfs.ids.ServiceId;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
 public class Calendar
-        extends CalendarId
+        extends ServiceId
 {
     private final boolean mMonday;
     private final boolean mTuesday;
@@ -19,7 +19,7 @@ public class Calendar
     private final String mEndDate;
 
 
-    public Calendar( final String id,
+    public Calendar( final String serviceId,
                      final boolean monday,
                      final boolean tuesday,
                      final boolean wednesday,
@@ -29,7 +29,7 @@ public class Calendar
                      final boolean sunday,
                      final String startDate,
                      final String endDate ) {
-        super( id );
+        super( serviceId );
         mMonday = Preconditions.checkNotNull( monday );
         mTuesday = Preconditions.checkNotNull( tuesday );
         mWednesday = Preconditions.checkNotNull( wednesday );

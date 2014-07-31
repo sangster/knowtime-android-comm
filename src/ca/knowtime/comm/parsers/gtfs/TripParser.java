@@ -33,18 +33,18 @@ public class TripParser
 
 
     public TripParser( final JSONObject json ) {
-        super( "trip", json );
+        super( json );
     }
 
 
     @Override
     public Trip get()
     throws ParseException {
-        return new Trip( unaliasIntern( "id" ).get(),
+        return new Trip( optIntern( "trip_id" ).get(),
                          optIntern( "route_id" ).get(),
                          optIntern( "service_id" ).get(),
-                         unalias( "headsign" ),
-                         unalias( "short_name" ),
+                         opt( "trip_headsign" ),
+                         opt( "trip_short_name" ),
                          optInteger( "direction_id" ),
                          optIntern( "block_id" ),
                          optIntern( "shape_id" ),
